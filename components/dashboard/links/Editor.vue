@@ -87,6 +87,17 @@ function randomSlug() {
   form.setFieldValue('slug', nanoid()())
 }
 
+function appendUTM(source) {
+  const current = form.values.url || ''
+  if (!current) {
+    toast.error('请先输入目标链接 (URL)')
+    return
+  }
+  const sep = current.includes('?') ? '&' : '?'
+  form.setFieldValue('url', `${current.replace(/([?&])utm_source=[^&]*/, '')}${sep}utm_source=${source}`)
+  toast.success(`已为目标链接追加 [${source}] 渠道标记`)
+}
+
 const aiSlugPending = ref(false)
 async function aiSlug() {
   if (!form.values.url)
@@ -160,6 +171,42 @@ const { previewMode } = useRuntimeConfig().public
       >
         预览模式下短链最长有效期为 24 小时。
       </p>
+
+      <div
+        v-if="!isEdit"
+        class="flex flex-wrap items-center gap-1.5 px-2 py-1 text-xs text-gray-500"
+      >
+        <span>渠道追加:</span>
+        <button
+          type="button"
+          class="px-2 py-0.5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors"
+          @click="appendUTM('wechat')"
+        >
+          + 微信
+        </button>
+        <button
+          type="button"
+          class="px-2 py-0.5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors"
+          @click="appendUTM('weibo')"
+        >
+          + 微博
+        </button>
+        <button
+          type="button"
+          class="px-2 py-0.5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors"
+          @click="appendUTM('red')"
+        >
+          + 小红书
+        </button>
+        <button
+          type="button"
+          class="px-2 py-0.5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors"
+          @click="appendUTM('offline_qr')"
+        >
+          + 现场物料
+        </button>
+      </div>
+
       <AutoForm
         class="px-2 space-y-2 overflow-y-auto"
         :schema="EditLinkSchema"
