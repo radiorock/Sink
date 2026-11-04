@@ -12,7 +12,12 @@ export default eventHandler(async (event) => {
 
   let isAuthenticated = validTokens.includes(token || '')
 
-  // 若不在环境变量预设列表中，检查 KV 用户体系
+  // 1. 检查是否命中内置预设列表（包含 16 位强口令及历史兼容口令）
+  if (!isAuthenticated && token && PRESET_TOKENS[token]) {
+    isAuthenticated = true
+  }
+
+  // 2. 若不在预设列表中，检查 KV 用户体系
   if (!isAuthenticated && token) {
     const { cloudflare } = event.context
     const KV = cloudflare?.env?.KV

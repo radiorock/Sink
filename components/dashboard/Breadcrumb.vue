@@ -1,35 +1,35 @@
 <script setup>
 import { NuxtLink } from '#components'
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     required: true,
   },
 })
-const { title } = useAppConfig()
+const { title: siteTitle } = useAppConfig()
 </script>
 
 <template>
-  <Breadcrumb class="flex justify-between">
+  <Breadcrumb class="flex justify-between items-center">
     <BreadcrumbList>
       <BreadcrumbItem>
         <BreadcrumbLink href="/">
-          {{ title }}
+          {{ siteTitle }}
         </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbSeparator />
       <BreadcrumbItem>
         <BreadcrumbLink
           :as="NuxtLink"
-          to="/dashboard"
+          to="/dashboard/links"
         >
-          管理后台
+          工作台
         </BreadcrumbLink>
       </BreadcrumbItem>
       <BreadcrumbSeparator />
       <BreadcrumbItem>
-        <BreadcrumbPage>{{ title }}</BreadcrumbPage>
+        <BreadcrumbPage class="font-medium text-gray-900 dark:text-gray-100">{{ props.title }}</BreadcrumbPage>
       </BreadcrumbItem>
     </BreadcrumbList>
 

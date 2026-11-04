@@ -55,12 +55,16 @@ export function verifyPassword(plain: string, stored: string, hash?: string): bo
   return false
 }
 
-const PRESET_TOKENS: Record<string, { username: string, name: string, role: 'admin' | 'operator' | 'viewer' }> = {
+export const PRESET_TOKENS: Record<string, { username: string, name: string, role: 'admin' | 'operator' | 'viewer' }> = {
+  // 底座与 16 位增强密码
   'mfySQFF-0tzJk8c!': { username: 'root', name: '超级管理员 (底座)', role: 'admin' },
   'pv1wYsifMv%$-9#N': { username: 'admin', name: '管理员 (展泰总控)', role: 'admin' },
   '7ud0qCt8Wy$q&cu$': { username: 'ten_op', name: 'TEN 专属运营', role: 'operator' },
   '2%_IQu-LT6T6k_ET': { username: 'marketing', name: '市场营销团队', role: 'operator' },
   'OhJBIY@8fpPZ&FUN': { username: 'viewer', name: '只读观察员', role: 'viewer' },
+  // 无缝向下兼容历史管理口令，避免团队成员突发登录受阻
+  '2Oqg8m9fw': { username: 'admin', name: '管理员 (展泰总控)', role: 'admin' },
+  'ShowtimeAdmin2026': { username: 'admin', name: '管理员 (展泰总控)', role: 'admin' },
 }
 
 export async function getOperatorContext(event: H3Event): Promise<{
