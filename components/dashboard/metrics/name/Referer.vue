@@ -20,8 +20,8 @@ defineProps({
       />
       <AvatarFallback>
         <img
-          src="/sink.png"
-          alt="Sink"
+          src="/icon-192.png"
+          alt="ShowTime"
         >
       </AvatarFallback>
     </Avatar>

@@ -26,3 +26,8 @@ logs
 site
 cache
 public/world.json
+
+# Allow public images in project
+!public/*.png
+!public/*.jpg
+

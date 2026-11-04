@@ -1,6 +1,6 @@
 export default eventHandler(() => {
   return {
-    name: 'Sink',
-    url: 'https://sink.cool',
+    name: 'ShowTime 展泰文化',
+    url: 'https://go.showtime.ing',
   }
 })

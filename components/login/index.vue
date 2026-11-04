@@ -1,21 +1,19 @@
 <script setup>
-import { AlertCircle } from 'lucide-vue-next'
+import { ShieldCheck } from 'lucide-vue-next'
 import { z } from 'zod'
 import { toast } from 'vue-sonner'
 
 const LoginSchema = z.object({
-  token: z.string().describe('SiteToken'),
+  token: z.string().describe('授权口令 (Site Token)'),
 })
 const loginFieldConfig = {
   token: {
     inputProps: {
       type: 'password',
-      placeholder: '********',
+      placeholder: '请输入公司分配的授权口令',
     },
   },
 }
-
-const { previewMode } = useRuntimeConfig().public
 
 async function onSubmit(form) {
   try {
@@ -25,7 +23,7 @@ async function onSubmit(form) {
   }
   catch (e) {
     console.error(e)
-    toast.error('Login failed, please try again.', {
+    toast.error('登录认证失败，请检查授权口令是否正确', {
       description: e.message,
     })
   }
@@ -33,31 +31,37 @@ async function onSubmit(form) {
 </script>
 
 <template>
-  <Card class="w-full max-w-sm">
-    <CardHeader>
-      <CardTitle class="text-2xl">
-        Login
+  <Card class="w-full max-w-sm shadow-xl border-gray-200/80 dark:border-gray-800">
+    <CardHeader class="space-y-3 pb-4">
+      <div class="flex justify-center py-2">
+        <div class="bg-white/95 px-3 py-1.5 rounded-lg border border-gray-100 shadow-sm">
+          <img
+            src="/showtime-logo.png"
+            alt="ShowTime 展泰文化"
+            class="h-7 w-auto object-contain"
+          >
+        </div>
+      </div>
+      <CardTitle class="text-xl text-center font-bold">
+        展泰团队管理工作台
       </CardTitle>
-      <CardDescription>
-        Enter your site token to login.
+      <CardDescription class="text-center text-xs">
+        请输入您的专属授权口令进入流量与短链控制台
       </CardDescription>
     </CardHeader>
     <CardContent class="grid gap-4">
       <AutoForm
-        class="space-y-6"
+        class="space-y-5"
         :schema="LoginSchema"
         :field-config="loginFieldConfig"
         @submit="onSubmit"
       >
-        <Alert v-if="previewMode">
-          <AlertCircle class="w-4 h-4" />
-          <AlertTitle>Tips</AlertTitle>
-          <AlertDescription>
-            The site token for preview mode is <code class="font-mono text-green-500">SinkCool</code> .
-          </AlertDescription>
-        </Alert>
-        <Button class="w-full">
-          Login
+        <div class="flex items-center gap-2 p-2.5 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800">
+          <ShieldCheck class="w-4 h-4 text-green-600 shrink-0" />
+          <span>支持管理员、TEN 运营、市场团队专属账号登录</span>
+        </div>
+        <Button class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5">
+          进入工作台
         </Button>
       </AutoForm>
     </CardContent>
