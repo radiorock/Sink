@@ -10,8 +10,8 @@ import {
 
 const features = ref([
   {
-    title: '艺人与项目专属通道',
-    description: '支持为旗下艺人（如 TEN）及各类演出巡演定制专属独立二级域名与个性化短链。',
+    title: '演出与项目专属通道',
+    description: '支持为旗下巡演项目、品牌活动及演出定制专属独立二级域名与个性化短链。',
     icon: Sparkles,
   },
   {
@@ -21,7 +21,7 @@ const features = ref([
   },
   {
     title: '边缘毫秒级极速直跳',
-    description: '基于 Cloudflare 顶级全球边缘网络，确保海量粉丝在开票与周边上架瞬间零延迟秒开。',
+    description: '基于 Cloudflare 顶级全球边缘网络，确保海量观众在开票与物料宣发瞬间零延迟秒开。',
     icon: Zap,
   },
   {
@@ -31,7 +31,7 @@ const features = ref([
   },
   {
     title: '公司团队多账号协同',
-    description: '为管理层、TEN 运营执行、市场宣发团队配置独立专属口令，权限分级管理。',
+    description: '为管理层、各项目运营团队及市场宣发成员配置独立专属口令，权限分级管理。',
     icon: Users2,
   },
   {

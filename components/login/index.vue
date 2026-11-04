@@ -58,7 +58,7 @@ async function onSubmit(form) {
       >
         <div class="flex items-center gap-2 p-2.5 text-xs text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800">
           <ShieldCheck class="w-4 h-4 text-green-600 shrink-0" />
-          <span>支持管理员、TEN 运营、市场团队专属账号登录</span>
+          <span>支持管理员、运营及宣发团队专属授权口令登录</span>
         </div>
         <Button class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5">
           进入工作台

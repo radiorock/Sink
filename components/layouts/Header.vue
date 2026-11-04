@@ -57,12 +57,6 @@ const { title } = useAppConfig()
                 href="/dashboard"
                 title="管理工作台"
               >管理工作台</a>
-              <a
-                class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-sm transition-all md:w-auto text-center"
-                href="https://ten.showtime.ing"
-                target="_blank"
-                title="艺人 TEN 周边直达"
-              >TEN 艺人专区</a>
               <span class="mt-2 md:mt-0">
                 <SwitchTheme />
               </span>
