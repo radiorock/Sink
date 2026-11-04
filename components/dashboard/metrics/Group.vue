@@ -1,6 +1,4 @@
 <script setup>
-import pluralize from 'pluralize'
-
 defineProps({
   tabs: {
     type: Array,
@@ -8,11 +6,23 @@ defineProps({
   },
 })
 
-function type2name(type) {
-  if (['os'].includes(type))
-    return type.toUpperCase()
+const tabNameMap = {
+  country: '国家/地区',
+  region: '省份/地区',
+  city: '城市',
+  referer: '引流来源',
+  slug: '短链标识',
+  language: '语言偏好',
+  timezone: '时区分布',
+  device: '设备机型',
+  deviceType: '设备分类',
+  os: '操作系统',
+  browser: '浏览器',
+  browserType: '浏览器内核',
+}
 
-  return pluralize(type.replace(type[0], type[0].toUpperCase()))
+function type2name(type) {
+  return tabNameMap[type] || type
 }
 </script>
 

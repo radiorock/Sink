@@ -7,7 +7,8 @@ export function useAPI(api: string, options?: object): Promise<unknown> {
       Authorization: `Bearer ${localStorage.getItem('SinkSiteToken') || ''}`,
     },
   })).catch((error) => {
-    if (error?.status === 401) {
+    // 仅在核心凭据验证接口失败或被服务端明确判定未授权时才清空 Token 并跳转
+    if (error?.status === 401 && api === '/api/verify') {
       localStorage.removeItem('SinkSiteToken')
       navigateTo('/dashboard/login')
     }

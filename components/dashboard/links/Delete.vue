@@ -18,7 +18,7 @@ async function deleteLink() {
     },
   })
   emit('update:link', props.link, 'delete')
-  toast('Delete successful!')
+  toast('短链删除成功！')
 }
 </script>
 
@@ -29,15 +29,15 @@ async function deleteLink() {
     </AlertDialogTrigger>
     <AlertDialogContent class="max-w-[95svw] max-h-[95svh] md:max-w-lg grid-rows-[auto_minmax(0,1fr)_auto]">
       <AlertDialogHeader>
-        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+        <AlertDialogTitle>确认删除此短链？</AlertDialogTitle>
         <AlertDialogDescription>
-          This action cannot be undone. This will really delete your link from servers.
+          此操作不可撤销，该短链及对应的跳转规则将立即从系统中永久删除。
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogCancel>取消</AlertDialogCancel>
         <AlertDialogAction @click="deleteLink">
-          Continue
+          确认删除
         </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>

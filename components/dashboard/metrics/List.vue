@@ -21,12 +21,12 @@ defineProps({
       <div
         class="h-12 px-4 font-medium text-left align-middle text-muted-foreground "
       >
-        Name
+        维度名称 / 来源
       </div>
       <div
         class="h-12 px-4 font-medium text-right align-middle text-muted-foreground"
       >
-        Count
+        访问量
       </div>
     </div>
     <VList

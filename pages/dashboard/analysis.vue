@@ -4,7 +4,7 @@ provide('id', ref())
 
 <template>
   <main class="space-y-6">
-    <DashboardBreadcrumb title="Analysis" />
+    <DashboardBreadcrumb title="全站大盘" />
     <Dashboard />
   </main>
 </template>

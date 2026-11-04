@@ -16,12 +16,12 @@ function formatName(name, type) {
 
   try {
     if (type === 'country') {
-      const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
-      return `${getFlag(name)} ${regionNames.of(name)}`
+      const regionNames = new Intl.DisplayNames(['zh-CN', 'zh'], { type: 'region' })
+      return `${getFlag(name)} ${regionNames.of(name) || name}`
     }
     if (type === 'language') {
-      const languageNames = new Intl.DisplayNames(['en'], { type: 'language' })
-      return languageNames.of(name)
+      const languageNames = new Intl.DisplayNames(['zh-CN', 'zh'], { type: 'language' })
+      return languageNames.of(name) || name
     }
     return name
   }
@@ -53,7 +53,7 @@ function formatName(name, type) {
           v-else
           class="w-full truncate"
         >
-          {{ formatName(name, type) || '(None)' }}
+          {{ formatName(name, type) || '(直接访问/未知)' }}
         </div>
       </TooltipTrigger>
       <TooltipContent v-if="name">

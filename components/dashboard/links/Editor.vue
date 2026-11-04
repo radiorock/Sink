@@ -40,12 +40,23 @@ const EditLinkSchema = LinkSchema.pick({
 })
 
 const fieldConfig = {
+  url: {
+    inputProps: {
+      placeholder: '请输入目标跳转网址 (如 https://...)',
+    },
+  },
   slug: {
     disabled: isEdit,
+    inputProps: {
+      placeholder: '留空自动随机生成或指定自定义后缀',
+    },
   },
   optional: {
     comment: {
       component: 'textarea',
+      inputProps: {
+        placeholder: '可选：填写短链用途或备注说明',
+      },
     },
   },
 }
@@ -116,10 +127,10 @@ async function onSubmit(formData) {
   dialogOpen.value = false
   emit('update:link', newLink)
   if (isEdit) {
-    toast('Link updated successfully')
+    toast('短链更新成功！')
   }
   else {
-    toast('Link created successfully')
+    toast('短链创建成功！')
   }
 }
 
@@ -135,19 +146,19 @@ const { previewMode } = useRuntimeConfig().public
           variant="outline"
           @click="randomSlug"
         >
-          Create Link
+          新建短链
         </Button>
       </slot>
     </DialogTrigger>
     <DialogContent class="max-w-[95svw] max-h-[95svh] md:max-w-lg grid-rows-[auto_minmax(0,1fr)_auto]">
       <DialogHeader>
-        <DialogTitle>{{ link.id ? 'Edit Link' : 'Create Link' }}</DialogTitle>
+        <DialogTitle>{{ link.id ? '编辑短链' : '新建短链' }}</DialogTitle>
       </DialogHeader>
       <p
         v-if="previewMode"
         class="text-sm text-muted-foreground"
       >
-        The preview mode link is valid for up to 24 hours.
+        预览模式下短链最长有效期为 24 小时。
       </p>
       <AutoForm
         class="px-2 space-y-2 overflow-y-auto"
@@ -165,10 +176,12 @@ const { previewMode } = useRuntimeConfig().public
             <div class="absolute right-0 flex space-x-3 top-1">
               <Shuffle
                 class="w-4 h-4 cursor-pointer"
+                title="随机生成短链"
                 @click="randomSlug"
               />
               <Sparkles
                 class="w-4 h-4 cursor-pointer"
+                title="AI 智能生成"
                 :class="{ 'animate-bounce': aiSlugPending }"
                 @click="aiSlug"
               />
@@ -185,11 +198,11 @@ const { previewMode } = useRuntimeConfig().public
               variant="secondary"
               class="mt-2 sm:mt-0"
             >
-              Close
+              取消
             </Button>
           </DialogClose>
           <Button type="submit">
-            Save
+            保存
           </Button>
         </DialogFooter>
       </AutoForm>

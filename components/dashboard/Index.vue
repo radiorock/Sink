@@ -29,7 +29,7 @@ function changeDate(time) {
         #left
       >
         <h3 class="text-xl font-bold leading-10">
-          {{ link.slug }}'s Stats
+          {{ link.slug }} 访问统计
         </h3>
       </template>
       <DashboardDatePicker @update:date-range="changeDate" />

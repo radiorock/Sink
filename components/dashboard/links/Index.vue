@@ -63,7 +63,7 @@ function updateLinkList(link, type) {
       v-if="!isLoading && listComplete"
       class="flex items-center justify-center text-sm"
     >
-      No more
+      已加载全部短链
     </div>
   </main>
 </template>

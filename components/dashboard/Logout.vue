@@ -16,15 +16,15 @@ function logOut() {
     </AlertDialogTrigger>
     <AlertDialogContent class="max-w-[95svw] max-h-[95svh] md:max-w-lg grid-rows-[auto_minmax(0,1fr)_auto]">
       <AlertDialogHeader>
-        <AlertDialogTitle>LogOut ?</AlertDialogTitle>
+        <AlertDialogTitle>确认退出登录？</AlertDialogTitle>
         <AlertDialogDescription>
-          Are you sure you want to log out ?
+          确定要退出当前管理账号吗？退出后需重新输入授权口令。
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogCancel>取消</AlertDialogCancel>
         <AlertDialogAction @click="logOut">
-          LogOut
+          退出登录
         </AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
