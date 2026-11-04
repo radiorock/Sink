@@ -2,7 +2,7 @@
 import { z } from 'zod'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { Shuffle, Sparkles } from 'lucide-vue-next'
+import { Plus, Shuffle, Sparkles } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { DependencyType } from '@/components/ui/auto-form/interface'
 import { LinkSchema, nanoid } from '@/schemas/link'
@@ -34,8 +34,14 @@ const EditLinkSchema = LinkSchema.pick({
     title: true,
     description: true,
     image: true,
+    tags: true,
   }).extend({
-    expiration: z.coerce.date().optional(),
+    expiration: z.coerce.date().describe('到期截止时间 (可选)').optional(),
+    fallbackUrl: z.string().trim().url('请输入有效的兜底网址').max(2048).describe('到期兜底跳转 (Fallback URL)').optional(),
+    wechatUrl: z.string().trim().url('请输入有效的微信专享网址').max(2048).describe('微信专享落地页 (URL)').optional(),
+    wechatShield: z.boolean().default(false).describe('开启微信防封引导 (提示在浏览器打开)').optional(),
+    tagsInput: z.string().trim().describe('项目与渠道标签 (逗号分隔，如：TEN巡演, 票务早鸟)').optional(),
+    comment: z.string().trim().max(2048).describe('备注说明 (可选)').optional(),
   }).optional(),
 })
 
@@ -58,6 +64,21 @@ const fieldConfig = {
         placeholder: '可选：填写短链用途或备注说明',
       },
     },
+    fallbackUrl: {
+      inputProps: {
+        placeholder: '活动截止后自动跳转的兜底网址 (可选)',
+      },
+    },
+    wechatUrl: {
+      inputProps: {
+        placeholder: '微信内打开时专享的落地网址 (可选)',
+      },
+    },
+    tagsInput: {
+      inputProps: {
+        placeholder: '例如：TEN巡演, 票务早鸟, Instagram',
+      },
+    },
   },
 }
 
@@ -77,6 +98,10 @@ const form = useForm({
     url: link.value.url,
     optional: {
       comment: link.value.comment,
+      fallbackUrl: link.value.fallbackUrl,
+      wechatUrl: link.value.wechatUrl,
+      wechatShield: !!link.value.wechatShield,
+      tagsInput: Array.isArray(link.value.tags) ? link.value.tags.join(', ') : '',
     },
   },
   validateOnMount: isEdit,
@@ -125,23 +150,39 @@ onMounted(() => {
 })
 
 async function onSubmit(formData) {
-  const link = {
+  const optionalData = formData.optional || {}
+
+  // 处理标签
+  let tags = []
+  if (optionalData.tagsInput) {
+    tags = optionalData.tagsInput
+      .split(/[,，]/)
+      .map(t => t.trim())
+      .filter(Boolean)
+  }
+
+  const payload = {
     url: formData.url,
     slug: formData.slug,
-    ...(formData.optional || []),
-    expiration: formData.optional?.expiration ? date2unix(formData.optional?.expiration, 'end') : undefined,
+    comment: optionalData.comment,
+    fallbackUrl: optionalData.fallbackUrl,
+    wechatUrl: optionalData.wechatUrl,
+    wechatShield: optionalData.wechatShield,
+    tags,
+    expiration: optionalData.expiration ? date2unix(optionalData.expiration, 'end') : undefined,
   }
-  const { link: newLink } = await useAPI(isEdit ? '/api/link/edit' : '/api/link/create', {
-    method: isEdit ? 'PUT' : 'POST',
-    body: link,
-  })
-  dialogOpen.value = false
-  emit('update:link', newLink)
-  if (isEdit) {
-    toast('短链更新成功！')
+
+  try {
+    const { link: newLink } = await useAPI(isEdit ? '/api/link/edit' : '/api/link/create', {
+      method: isEdit ? 'PUT' : 'POST',
+      body: payload,
+    })
+    dialogOpen.value = false
+    emit('update:link', newLink, isEdit ? 'edit' : 'create')
+    toast.success(isEdit ? '短链更新成功！' : '短链创建成功！')
   }
-  else {
-    toast('短链创建成功！')
+  catch (e) {
+    toast.error('操作失败', { description: e.data?.statusText || e.message })
   }
 }
 
@@ -153,30 +194,35 @@ const { previewMode } = useRuntimeConfig().public
     <DialogTrigger as-child>
       <slot>
         <Button
-          class="ml-2"
           variant="outline"
+          class="flex items-center gap-1.5"
           @click="randomSlug"
         >
-          新建短链
+          <Plus class="w-4 h-4" />
+          <span>新建短链</span>
         </Button>
       </slot>
     </DialogTrigger>
-    <DialogContent class="max-w-[95svw] max-h-[95svh] md:max-w-lg grid-rows-[auto_minmax(0,1fr)_auto]">
+    <DialogContent class="max-w-[95svw] max-h-[95svh] md:max-w-xl grid-rows-[auto_minmax(0,1fr)_auto]">
       <DialogHeader>
-        <DialogTitle>{{ link.id ? '编辑短链' : '新建短链' }}</DialogTitle>
+        <DialogTitle>{{ link.id ? '编辑短链通道' : '新建单条短链' }}</DialogTitle>
+        <DialogDescription class="text-xs text-gray-500">
+          支持配置目标网址、微信专享路径、到期自动拦截与项目业务标签。
+        </DialogDescription>
       </DialogHeader>
+
       <p
         v-if="previewMode"
-        class="text-sm text-muted-foreground"
+        class="text-xs text-amber-600 bg-amber-50 dark:bg-amber-950/40 p-2 rounded-lg"
       >
-        预览模式下短链最长有效期为 24 小时。
+        提示：预览模式下短链最长有效期为 24 小时。
       </p>
 
       <div
         v-if="!isEdit"
         class="flex flex-wrap items-center gap-1.5 px-2 py-1 text-xs text-gray-500"
       >
-        <span>渠道追加:</span>
+        <span>常用渠道:</span>
         <button
           type="button"
           class="px-2 py-0.5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors"
@@ -194,16 +240,23 @@ const { previewMode } = useRuntimeConfig().public
         <button
           type="button"
           class="px-2 py-0.5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors"
-          @click="appendUTM('red')"
+          @click="appendUTM('xiaohongshu')"
         >
           + 小红书
         </button>
         <button
           type="button"
           class="px-2 py-0.5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors"
-          @click="appendUTM('offline_qr')"
+          @click="appendUTM('instagram')"
         >
-          + 现场物料
+          + Instagram
+        </button>
+        <button
+          type="button"
+          class="px-2 py-0.5 rounded bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 transition-colors"
+          @click="appendUTM('tiktok')"
+        >
+          + TikTok
         </button>
       </div>
 
@@ -222,12 +275,12 @@ const { previewMode } = useRuntimeConfig().public
           >
             <div class="absolute right-0 flex space-x-3 top-1">
               <Shuffle
-                class="w-4 h-4 cursor-pointer"
+                class="w-4 h-4 cursor-pointer text-gray-400 hover:text-gray-700"
                 title="随机生成短链"
                 @click="randomSlug"
               />
               <Sparkles
-                class="w-4 h-4 cursor-pointer"
+                class="w-4 h-4 cursor-pointer text-red-500 hover:text-red-700"
                 title="AI 智能生成"
                 :class="{ 'animate-bounce': aiSlugPending }"
                 @click="aiSlug"
@@ -238,7 +291,7 @@ const { previewMode } = useRuntimeConfig().public
             />
           </div>
         </template>
-        <DialogFooter>
+        <DialogFooter class="pt-2">
           <DialogClose as-child>
             <Button
               type="button"
@@ -248,8 +301,8 @@ const { previewMode } = useRuntimeConfig().public
               取消
             </Button>
           </DialogClose>
-          <Button type="submit">
-            保存
+          <Button type="submit" class="bg-red-600 hover:bg-red-700 text-white">
+            保存短链
           </Button>
         </DialogFooter>
       </AutoForm>

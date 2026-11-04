@@ -14,10 +14,16 @@ export const LinkSchema = z.object({
   comment: z.string().trim().max(2048).describe('备注说明 (可选)').optional(),
   createdAt: z.number().int().safe().default(() => Math.floor(Date.now() / 1000)),
   updatedAt: z.number().int().safe().default(() => Math.floor(Date.now() / 1000)),
-  expiration: z.number().int().safe().refine(expiration => expiration > Math.floor(Date.now() / 1000), {
-    message: '过期时间必须大于当前时间',
-    path: ['expiration'],
-  }).describe('到期时间 (可选)').optional(),
+  // 到期时间戳 (秒)
+  expiration: z.number().int().safe().describe('到期时间 (可选)').optional(),
+  // 到期后兜底重定向链接
+  fallbackUrl: z.string().trim().url('请输入有效的兜底网址').max(2048).describe('到期兜底跳转 (URL)').optional(),
+  // 微信环境专享落地页
+  wechatUrl: z.string().trim().url('请输入有效的微信专享网址').max(2048).describe('微信专享落地页 (URL)').optional(),
+  // 是否开启微信“在浏览器中打开”防封遮罩引导
+  wechatShield: z.boolean().default(false).describe('微信防封浏览器引导').optional(),
+  // 业务标签组 (如：TEN巡演, 票务早鸟, Instagram)
+  tags: z.array(z.string().trim()).default([]).describe('业务项目标签').optional(),
   title: z.string().trim().max(2048).optional(),
   description: z.string().trim().max(2048).optional(),
   image: z.string().trim().url().max(2048).optional(),

@@ -14,30 +14,37 @@ export default eventHandler(async (event) => {
   const { KV } = cloudflare.env
 
   const existingLink: z.infer<typeof LinkSchema> | null = await KV.get(`link:${link.slug}`, { type: 'json' })
-  if (existingLink) {
-    const newLink = {
-      ...existingLink,
-      ...link,
-      id: existingLink.id, // don't update id
-      createdAt: existingLink.createdAt, // don't update createdAt
-      updatedAt: Math.floor(Date.now() / 1000),
-    }
-    const expiration = getExpiration(event, newLink.expiration)
-    await KV.put(`link:${newLink.slug}`, JSON.stringify(newLink), {
-      expiration,
-      metadata: {
-        expiration,
-      },
+  if (!existingLink) {
+    throw createError({
+      status: 404,
+      statusText: '待更新的短链不存在',
     })
-    setResponseStatus(event, 201)
-
-    await recordAuditLog(event, {
-      action: 'UPDATE_LINK',
-      actionLabel: '更新短链',
-      target: newLink.slug,
-      details: `更新短链 [/${newLink.slug}]: 目标地址 [${existingLink.url}] -> [${newLink.url}]`,
-    })
-
-    return { link: newLink }
   }
+
+  const newLink = {
+    ...existingLink,
+    ...link,
+    id: existingLink.id, // don't update id
+    createdAt: existingLink.createdAt, // don't update createdAt
+    updatedAt: Math.floor(Date.now() / 1000),
+  }
+
+  const kvOptions: any = {
+    metadata: {
+      expiration: newLink.expiration,
+      tags: newLink.tags || [],
+    },
+  }
+
+  await KV.put(`link:${newLink.slug}`, JSON.stringify(newLink), kvOptions)
+  setResponseStatus(event, 201)
+
+  await recordAuditLog(event, {
+    action: 'UPDATE_LINK',
+    actionLabel: '更新短链',
+    target: newLink.slug,
+    details: `更新短链 [/${newLink.slug}]: 目标地址 [${existingLink.url}] -> [${newLink.url}]${newLink.tags?.length ? `，标签: ${newLink.tags.join(',')}` : ''}`,
+  })
+
+  return { link: newLink }
 })

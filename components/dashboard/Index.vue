@@ -130,5 +130,6 @@ async function exportCSV() {
     <DashboardCounters />
     <DashboardViews />
     <DashboardMetrics />
+    <DashboardSubdomainsOverview v-if="!link" />
   </main>
 </template>
