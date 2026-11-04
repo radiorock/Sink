@@ -36,11 +36,16 @@ const { title, description } = useAppConfig()
 
       <div class="lg:col-span-5 flex justify-center">
         <div class="relative w-full max-w-md p-6 bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 rounded-2xl shadow-xl shadow-gray-200/50 dark:shadow-none">
-          <div class="flex items-center justify-center p-8 bg-gray-50 dark:bg-gray-950 rounded-xl border border-dashed border-gray-200 dark:border-gray-800">
+          <div class="flex items-center justify-center p-8 bg-gray-50/60 dark:bg-gray-950/60 rounded-xl border border-gray-100 dark:border-gray-800/80">
             <img
               src="/showtime-logo.png"
               :alt="title"
-              class="w-full h-auto max-h-24 object-contain"
+              class="w-full h-auto max-h-16 object-contain dark:hidden"
+            >
+            <img
+              src="/showtime-logo-dark.png"
+              :alt="title"
+              class="w-full h-auto max-h-16 object-contain hidden dark:block"
             >
           </div>
           <div class="mt-6 grid grid-cols-3 gap-3 text-center">

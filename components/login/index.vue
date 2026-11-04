@@ -33,14 +33,17 @@ async function onSubmit(form) {
 <template>
   <Card class="w-full max-w-sm shadow-xl border-gray-200/80 dark:border-gray-800">
     <CardHeader class="space-y-3 pb-4">
-      <div class="flex justify-center py-2">
-        <div class="bg-white/95 px-3 py-1.5 rounded-lg border border-gray-100 shadow-sm">
-          <img
-            src="/showtime-logo.png"
-            alt="ShowTime 展泰文化"
-            class="h-7 w-auto object-contain"
-          >
-        </div>
+      <div class="flex items-center justify-center pt-2 pb-1">
+        <img
+          src="/showtime-logo.png"
+          alt="ShowTime 展泰文化"
+          class="h-9 w-auto object-contain dark:hidden"
+        >
+        <img
+          src="/showtime-logo-dark.png"
+          alt="ShowTime 展泰文化"
+          class="h-9 w-auto object-contain hidden dark:block"
+        >
       </div>
       <CardTitle class="text-xl text-center font-bold">
         展泰团队管理工作台

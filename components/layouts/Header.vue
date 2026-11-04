@@ -16,15 +16,18 @@ const { title } = useAppConfig()
           <a
             href="/"
             :title="title"
-            class="flex items-center space-x-2"
+            class="flex items-center transition-opacity hover:opacity-85"
           >
-            <div class="flex items-center bg-white/95 dark:bg-white/90 px-3 py-1.5 rounded-lg shadow-sm border border-gray-200/50">
-              <img
-                src="/showtime-logo.png"
-                :alt="title"
-                class="h-7 w-auto object-contain"
-              >
-            </div>
+            <img
+              src="/showtime-logo.png"
+              :alt="title"
+              class="h-8 md:h-9 w-auto object-contain dark:hidden"
+            >
+            <img
+              src="/showtime-logo-dark.png"
+              :alt="title"
+              class="h-8 md:h-9 w-auto object-contain hidden dark:block"
+            >
           </a>
         </div>
 
@@ -39,15 +42,18 @@ const { title } = useAppConfig()
             <a
               href="/"
               :title="title"
-              class="inline-flex items-center w-auto h-16 px-4 text-xl font-bold leading-none text-gray-900 dark:text-gray-100 md:hidden"
+              class="inline-flex items-center w-auto h-16 px-4 md:hidden transition-opacity hover:opacity-85"
             >
-              <div class="bg-white/95 px-2 py-1 rounded">
-                <img
-                  src="/showtime-logo.png"
-                  :alt="title"
-                  class="h-6 w-auto"
-                >
-              </div>
+              <img
+                src="/showtime-logo.png"
+                :alt="title"
+                class="h-7 w-auto object-contain dark:hidden"
+              >
+              <img
+                src="/showtime-logo-dark.png"
+                :alt="title"
+                class="h-7 w-auto object-contain hidden dark:block"
+              >
             </a>
             <div
               class="flex flex-col items-start justify-end w-full pt-4 md:items-center md:flex-row md:py-0 md:space-x-3"
