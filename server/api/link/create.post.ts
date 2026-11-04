@@ -23,6 +23,14 @@ export default eventHandler(async (event) => {
       },
     })
     setResponseStatus(event, 201)
+
+    await recordAuditLog(event, {
+      action: 'CREATE_LINK',
+      actionLabel: '新建短链',
+      target: link.slug,
+      details: `新建短链 [/${link.slug}] -> [${link.url}]${link.comment ? `，备注: ${link.comment}` : ''}`,
+    })
+
     return { link }
   }
 })

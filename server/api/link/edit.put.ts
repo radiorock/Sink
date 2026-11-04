@@ -30,6 +30,14 @@ export default eventHandler(async (event) => {
       },
     })
     setResponseStatus(event, 201)
+
+    await recordAuditLog(event, {
+      action: 'UPDATE_LINK',
+      actionLabel: '更新短链',
+      target: newLink.slug,
+      details: `更新短链 [/${newLink.slug}]: 目标地址 [${existingLink.url}] -> [${newLink.url}]`,
+    })
+
     return { link: newLink }
   }
 })
