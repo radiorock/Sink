@@ -63,7 +63,7 @@ onMounted(() => {
   <div class="space-y-6">
     <DashboardNav>
       <div class="flex items-center space-x-2">
-        <div class="relative w-64">
+        <div class="relative w-36 sm:w-64">
           <Search class="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
           <input
             v-model="searchQuery"

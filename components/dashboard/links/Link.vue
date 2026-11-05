@@ -137,6 +137,7 @@ const isExpired = computed(() => {
             <QRCode
               :data="shortLink"
               :image="linkIcon"
+              :filename="`ShowTime-${link.slug}-QR`"
             />
           </PopoverContent>
         </Popover>

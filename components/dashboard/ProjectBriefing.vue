@@ -147,8 +147,17 @@ function printReport() {
         </div>
       </div>
 
+      <!-- 加载中骨架屏 -->
+      <div v-if="loading" class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-5">
+        <div v-for="i in 4" :key="i" class="rounded-md bg-muted/40 p-3.5 border border-border/40 space-y-2">
+          <div class="h-3 w-16 bg-muted-foreground/20 rounded animate-pulse" />
+          <div class="h-7 w-24 bg-muted-foreground/30 rounded animate-pulse" />
+          <div class="h-2.5 w-20 bg-muted-foreground/15 rounded animate-pulse" />
+        </div>
+      </div>
+
       <!-- 核心指标摘要矩阵 (Executive KPI Grid) -->
-      <div v-if="reportData" class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-5">
+      <div v-else-if="reportData" class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-5">
         <div class="rounded-md bg-muted/40 p-3.5 border border-border/40">
           <div class="text-[11px] font-medium text-muted-foreground">
             总引流访问 (PV)
@@ -200,8 +209,19 @@ function printReport() {
       </div>
     </div>
 
-    <!-- 业务维度结构化解读与管理建议 -->
-    <div v-if="reportData" class="grid gap-6 md:grid-cols-2">
+    <!-- 业务维度结构化解读与管理建议 (加载骨架与渲染) -->
+    <div v-if="loading" class="grid gap-6 md:grid-cols-2">
+      <div v-for="i in 4" :key="i" class="rounded-lg border border-border/70 bg-card p-5 space-y-4">
+        <div class="h-4 w-32 bg-muted-foreground/20 rounded animate-pulse" />
+        <div class="h-10 w-full bg-muted-foreground/15 rounded animate-pulse" />
+        <div class="space-y-2">
+          <div class="h-3 w-full bg-muted-foreground/10 rounded animate-pulse" />
+          <div class="h-3 w-3/4 bg-muted-foreground/10 rounded animate-pulse" />
+        </div>
+      </div>
+    </div>
+
+    <div v-else-if="reportData" class="grid gap-6 md:grid-cols-2">
       <div
         v-for="sec in reportData.sections"
         :key="sec.id"

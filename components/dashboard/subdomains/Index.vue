@@ -294,10 +294,10 @@ onMounted(() => {
           <!-- 实时访问量统计 -->
           <div class="flex items-center gap-2">
             <span class="px-2.5 py-1 text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 rounded-lg font-mono">
-              👁️ {{ item.visits || 0 }} 次访问
+              {{ item.visits || 0 }} 次访问
             </span>
             <span class="px-2.5 py-1 text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded-lg font-mono">
-              👥 {{ item.visitors || 0 }} 独立访客
+              {{ item.visitors || 0 }} 独立访客
             </span>
           </div>
 
@@ -488,6 +488,7 @@ onMounted(() => {
           <QRCode
             v-if="currentQrUrl"
             :data="currentQrUrl"
+            :filename="`ShowTime-${currentQrTitle || 'subdomain'}-QR`"
           />
         </div>
         <p class="text-xs text-gray-400 font-mono break-all">

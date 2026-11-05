@@ -16,21 +16,21 @@ const wechatShield = ref(false)
 // 预设的海内外全渠道矩阵
 const CHANNELS = [
   // 海外主流
-  { id: 'instagram', name: 'Instagram', category: 'global', utm_source: 'instagram', utm_medium: 'social_bio', icon: '📸' },
-  { id: 'twitter', name: 'X (Twitter)', category: 'global', utm_source: 'twitter', utm_medium: 'tweet', icon: '𝕏' },
-  { id: 'tiktok', name: 'TikTok', category: 'global', utm_source: 'tiktok', utm_medium: 'short_video', icon: '🎵' },
-  { id: 'facebook', name: 'Facebook', category: 'global', utm_source: 'facebook', utm_medium: 'event_page', icon: '👥' },
-  { id: 'spotify', name: 'Spotify', category: 'global', utm_source: 'spotify', utm_medium: 'artist_profile', icon: '🎧' },
-  { id: 'ticketmaster', name: 'Ticketmaster', category: 'global', utm_source: 'ticketmaster', utm_medium: 'ticketing', icon: '🎟️' },
-  { id: 'weverse', name: 'Weverse', category: 'global', utm_source: 'weverse', utm_medium: 'community', icon: '⭐' },
+  { id: 'instagram', name: 'Instagram', category: 'global', utm_source: 'instagram', utm_medium: 'social_bio' },
+  { id: 'twitter', name: 'X (Twitter)', category: 'global', utm_source: 'twitter', utm_medium: 'tweet' },
+  { id: 'tiktok', name: 'TikTok', category: 'global', utm_source: 'tiktok', utm_medium: 'short_video' },
+  { id: 'facebook', name: 'Facebook', category: 'global', utm_source: 'facebook', utm_medium: 'event_page' },
+  { id: 'spotify', name: 'Spotify', category: 'global', utm_source: 'spotify', utm_medium: 'artist_profile' },
+  { id: 'ticketmaster', name: 'Ticketmaster', category: 'global', utm_source: 'ticketmaster', utm_medium: 'ticketing' },
+  { id: 'weverse', name: 'Weverse', category: 'global', utm_source: 'weverse', utm_medium: 'community' },
   // 国内主流
-  { id: 'wechat_moments', name: '微信朋友圈', category: 'domestic', utm_source: 'wechat_moments', utm_medium: 'feed', icon: '💬' },
-  { id: 'wechat_mp', name: '微信公众号', category: 'domestic', utm_source: 'wechat_mp', utm_medium: 'article', icon: '📰' },
-  { id: 'weibo', name: '微博官宣', category: 'domestic', utm_source: 'weibo', utm_medium: 'post', icon: '🔥' },
-  { id: 'xiaohongshu', name: '小红书', category: 'domestic', utm_source: 'xiaohongshu', utm_medium: 'note', icon: '📕' },
-  { id: 'douyin', name: '抖音', category: 'domestic', utm_source: 'douyin', utm_medium: 'short_video', icon: '🎬' },
-  { id: 'damai', name: '大麦分销', category: 'domestic', utm_source: 'damai', utm_medium: 'ticketing', icon: '🎫' },
-  { id: 'offline_qr', name: '现场物料扫码', category: 'domestic', utm_source: 'offline_poster', utm_medium: 'qr_print', icon: '📱' },
+  { id: 'wechat_moments', name: '微信朋友圈', category: 'domestic', utm_source: 'wechat_moments', utm_medium: 'feed' },
+  { id: 'wechat_mp', name: '微信公众号', category: 'domestic', utm_source: 'wechat_mp', utm_medium: 'article' },
+  { id: 'weibo', name: '微博官宣', category: 'domestic', utm_source: 'weibo', utm_medium: 'post' },
+  { id: 'xiaohongshu', name: '小红书', category: 'domestic', utm_source: 'xiaohongshu', utm_medium: 'note' },
+  { id: 'douyin', name: '抖音', category: 'domestic', utm_source: 'douyin', utm_medium: 'short_video' },
+  { id: 'damai', name: '大麦分销', category: 'domestic', utm_source: 'damai', utm_medium: 'ticketing' },
+  { id: 'offline_qr', name: '现场物料扫码', category: 'domestic', utm_source: 'offline_poster', utm_medium: 'qr_print' },
 ]
 
 const selectedChannels = ref(new Set(['wechat_moments', 'weibo', 'xiaohongshu', 'instagram', 'tiktok']))
@@ -113,7 +113,7 @@ async function handleBatchGenerate() {
   emit('refresh')
 
   if (failCount === 0) {
-    toast.success(`🎉 批量矩阵生成成功！已创建 ${successCount} 个渠道专属短链`)
+    toast.success(`批量矩阵生成成功！已创建 ${successCount} 个渠道专属短链`)
   }
   else {
     toast.warning(`批量生成完成：成功 ${successCount} 条，失败 ${failCount} 条`)
@@ -238,7 +238,6 @@ async function handleBatchGenerate() {
                 >
                   <Check v-if="selectedChannels.has(ch.id)" class="w-3 h-3" />
                 </div>
-                <span class="text-sm shrink-0">{{ ch.icon }}</span>
                 <span class="truncate">{{ ch.name }}</span>
               </div>
             </div>
@@ -264,7 +263,6 @@ async function handleBatchGenerate() {
                 >
                   <Check v-if="selectedChannels.has(ch.id)" class="w-3 h-3" />
                 </div>
-                <span class="text-sm shrink-0">{{ ch.icon }}</span>
                 <span class="truncate">{{ ch.name }}</span>
               </div>
             </div>
