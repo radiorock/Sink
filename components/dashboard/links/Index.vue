@@ -98,12 +98,24 @@ const filteredLinks = computed(() => {
 
 <template>
   <main class="space-y-6">
-    <DashboardNav>
+    <DashboardNav />
+
+    <!-- 页面标题与操作栏 (Page Header) -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-100 dark:border-gray-800/80">
+      <div>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">
+          短链通道
+        </h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          查看、创建并维护全站宣发引流短链通道及实时重定向策略
+        </p>
+      </div>
+
       <div class="flex items-center gap-2">
         <DashboardLinksBulkGenerator @refresh="() => getLinks(true)" />
         <DashboardLinksEditor @update:link="updateLinkList" />
       </div>
-    </DashboardNav>
+    </div>
 
     <!-- 检索与标签快速筛选栏 -->
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white dark:bg-gray-900 p-3 rounded-xl border border-gray-200/80 dark:border-gray-800 shadow-sm">

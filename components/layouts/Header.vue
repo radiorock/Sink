@@ -9,6 +9,27 @@ const { title } = useAppConfig()
 const isDashboard = computed(() => route.path.startsWith('/dashboard') && route.path !== '/dashboard/login')
 const currentUser = ref(null)
 
+const displayName = computed(() => {
+  if (!currentUser.value?.name)
+    return ''
+  const match = currentUser.value.name.match(/\((.*?)\)|（(.*?)）/)
+  if (match) {
+    return match[1] || match[2]
+  }
+  return currentUser.value.name
+})
+
+const roleLabel = computed(() => {
+  if (!currentUser.value?.role)
+    return ''
+  const roleMap = {
+    admin: '总控管理员',
+    operator: '专属运营',
+    viewer: '只读观察',
+  }
+  return roleMap[currentUser.value.role] || currentUser.value.role
+})
+
 async function fetchCurrentUser() {
   if (isDashboard.value) {
     try {
@@ -32,10 +53,10 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-  <section class="pb-4">
-    <nav class="container relative z-50 h-20 select-none">
+  <section class="pb-2">
+    <nav class="container relative z-50 h-16 select-none">
       <div
-        class="container relative flex flex-wrap items-center justify-between h-20 px-0 mx-auto overflow-hidden font-medium border-b border-gray-200 dark:border-gray-800 md:overflow-visible"
+        class="container relative flex flex-wrap items-center justify-between h-16 px-0 mx-auto overflow-hidden font-medium border-b border-gray-200 dark:border-gray-800 md:overflow-visible"
       >
         <div class="flex items-center justify-start h-full pr-4">
           <a
@@ -46,21 +67,18 @@ watch(() => route.path, () => {
             <img
               src="/showtime-logo.png"
               :alt="title"
-              class="h-8 md:h-9 w-auto object-contain dark:hidden"
+              class="h-7 md:h-8 w-auto object-contain dark:hidden"
             >
             <img
               src="/showtime-logo-dark.png"
               :alt="title"
-              class="h-8 md:h-9 w-auto object-contain hidden dark:block"
+              class="h-7 md:h-8 w-auto object-contain hidden dark:block"
             >
           </a>
-          <NuxtLink
-            v-if="isDashboard"
-            to="/dashboard"
-            class="ml-3 hidden sm:inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
-          >
-            管理工作台
-          </NuxtLink>
+          <template v-if="isDashboard">
+            <span class="text-gray-300 dark:text-gray-700 font-light mx-2 text-sm hidden sm:inline">/</span>
+            <span class="text-xs font-medium text-gray-500 dark:text-gray-400 hidden sm:inline tracking-wide">管理工作台</span>
+          </template>
         </div>
 
         <div
@@ -94,13 +112,14 @@ watch(() => route.path, () => {
               <template v-if="isDashboard">
                 <div
                   v-if="currentUser"
-                  class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-lg border border-gray-200/80 dark:border-gray-800 font-mono shadow-xs"
+                  class="inline-flex items-center gap-2 px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-lg border border-gray-200/80 dark:border-gray-700 font-mono shadow-xs"
                 >
                   <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span class="font-medium">{{ currentUser.name }}</span>
-                  <span class="text-gray-400">({{ currentUser.role === 'admin' ? '总控管理员' : (currentUser.role === 'operator' ? '专属运营' : '只读观察') }})</span>
+                  <span class="font-semibold">{{ displayName }}</span>
+                  <span class="text-gray-400 dark:text-gray-500">·</span>
+                  <span class="text-gray-500 dark:text-gray-400">{{ roleLabel }}</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5">
                   <SwitchTheme />
                   <DashboardLogout />
                 </div>

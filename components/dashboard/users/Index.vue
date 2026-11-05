@@ -186,10 +186,22 @@ onMounted(() => {
 
 <template>
   <div class="space-y-6">
-    <DashboardNav>
+    <DashboardNav />
+
+    <!-- 页面标题与操作栏 (Page Header) -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-100 dark:border-gray-800/80">
+      <div>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">
+          团队成员
+        </h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          管理后台操作账号、分配专属角色权限并维护安全访问密钥
+        </p>
+      </div>
+
       <Dialog v-model:open="createDialogOpen">
         <DialogTrigger as-child>
-          <Button class="bg-red-600 hover:bg-red-700 text-white font-medium shadow-sm">
+          <Button class="bg-red-600 hover:bg-red-700 text-white font-medium shadow-xs cursor-pointer h-9 px-3.5 text-xs sm:text-sm">
             <UserPlus class="w-4 h-4 mr-1.5" />
             添加成员账号
           </Button>
@@ -273,7 +285,7 @@ onMounted(() => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </DashboardNav>
+    </div>
 
     <!-- 加载中 -->
     <div

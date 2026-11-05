@@ -61,9 +61,21 @@ onMounted(() => {
 
 <template>
   <div class="space-y-6">
-    <DashboardNav>
+    <DashboardNav />
+
+    <!-- 页面标题与操作栏 (Page Header) -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-gray-100 dark:border-gray-800/80">
+      <div>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">
+          操作审计
+        </h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          系统不可篡改操作日志留痕，全量记录敏感变更、身份溯源及访问行为
+        </p>
+      </div>
+
       <div class="flex items-center space-x-2">
-        <div class="relative w-36 sm:w-64">
+        <div class="relative w-44 sm:w-64">
           <Search class="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
           <input
             v-model="searchQuery"
@@ -75,7 +87,7 @@ onMounted(() => {
         <Button
           variant="outline"
           size="sm"
-          class="h-8 text-xs"
+          class="h-8 text-xs cursor-pointer"
           @click="fetchLogs"
         >
           <RefreshCw
@@ -85,7 +97,7 @@ onMounted(() => {
           刷新
         </Button>
       </div>
-    </DashboardNav>
+    </div>
 
     <!-- 安全警示说明 -->
     <div class="p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-800 flex items-center justify-between text-xs text-gray-500">
