@@ -15,6 +15,7 @@ const endAt = ref(date2unix(now()))
 
 provide('startAt', startAt)
 provide('endAt', endAt)
+provide('slug', computed(() => props.link?.slug || ''))
 
 function changeDate(time) {
   startAt.value = time[0]
@@ -29,6 +30,7 @@ async function exportCSV() {
       useAPI('/api/stats/views', {
         query: {
           id: props.link?.id,
+          slug: props.link?.slug,
           unit: 'day',
           clientTimezone: getTimeZone(),
           startAt: startAt.value,
@@ -39,6 +41,7 @@ async function exportCSV() {
         query: {
           type: 'referer',
           id: props.link?.id,
+          slug: props.link?.slug,
           startAt: startAt.value,
           endAt: endAt.value,
         },
@@ -47,6 +50,7 @@ async function exportCSV() {
         query: {
           type: 'region',
           id: props.link?.id,
+          slug: props.link?.slug,
           startAt: startAt.value,
           endAt: endAt.value,
         },

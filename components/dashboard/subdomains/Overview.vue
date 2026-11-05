@@ -86,6 +86,14 @@ function copyDomain(domain) {
             <div class="text-xs text-gray-500 mt-0.5">
               {{ sub.title }}
             </div>
+            <div class="flex items-center gap-2 mt-1.5">
+              <span class="px-2 py-0.5 text-[10px] font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 rounded font-mono">
+                👁️ {{ sub.visits || 0 }} 访问
+              </span>
+              <span class="px-2 py-0.5 text-[10px] font-semibold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 rounded font-mono">
+                👥 {{ sub.visitors || 0 }} 访客
+              </span>
+            </div>
           </div>
 
           <span

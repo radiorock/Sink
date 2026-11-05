@@ -10,6 +10,7 @@ const defaultData = Object.freeze({
 const counters = ref(defaultData)
 
 const id = inject('id')
+const slug = inject('slug', ref(''))
 const startAt = inject('startAt')
 const endAt = inject('endAt')
 
@@ -18,14 +19,15 @@ async function getLinkCounters() {
   const { data } = await useAPI('/api/stats/counters', {
     query: {
       id: id.value,
+      slug: slug.value,
       startAt: startAt.value,
       endAt: endAt.value,
     },
   })
-  counters.value = data?.[0]
+  counters.value = data?.[0] || defaultData
 }
 
-const stopWatchTime = watch([startAt, endAt], getLinkCounters)
+const stopWatchTime = watch([startAt, endAt, id, slug], getLinkCounters)
 
 onMounted(async () => {
   getLinkCounters()
@@ -46,17 +48,15 @@ onBeforeUnmount(() => {
         <MousePointerClick class="w-4 h-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div
-          class="text-2xl font-bold"
-          :class="{ 'blur-lg': !counters.visits }"
-        >
-          {{ formatNumber(counters.visits) }}
+        <div class="text-2xl font-bold font-mono">
+          {{ formatNumber(counters.visits || 0) }}
         </div>
-        <!-- <p class="text-xs text-muted-foreground">
-          +90
-        </p> -->
+        <p class="text-[11px] text-gray-400 mt-1">
+          全网边缘请求实时累计
+        </p>
       </CardContent>
     </Card>
+
     <Card>
       <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle class="text-sm font-medium">
@@ -65,34 +65,29 @@ onBeforeUnmount(() => {
         <Users class="w-4 h-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div
-          class="text-2xl font-bold"
-          :class="{ 'blur-lg': !counters.visitors }"
-        >
-          {{ formatNumber(counters.visitors) }}
+        <div class="text-2xl font-bold font-mono">
+          {{ formatNumber(counters.visitors || 0) }}
         </div>
-        <!-- <p class="text-xs text-muted-foreground">
-          +90
-        </p> -->
+        <p class="text-[11px] text-gray-400 mt-1">
+          基于去重 IP 与设备画像
+        </p>
       </CardContent>
     </Card>
+
     <Card>
       <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle class="text-sm font-medium">
-          引流渠道数
+          引流渠道来源
         </CardTitle>
         <Flame class="w-4 h-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
-        <div
-          class="text-2xl font-bold"
-          :class="{ 'blur-lg': !counters.referers }"
-        >
-          {{ formatNumber(counters.referers) }}
+        <div class="text-2xl font-bold font-mono">
+          {{ formatNumber(counters.referers || 0) }}
         </div>
-        <!-- <p class="text-xs text-muted-foreground">
-          -20
-        </p> -->
+        <p class="text-[11px] text-gray-400 mt-1">
+          涵盖社媒、票务与微信等
+        </p>
       </CardContent>
     </Card>
   </div>

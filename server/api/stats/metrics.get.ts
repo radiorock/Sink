@@ -9,12 +9,11 @@ const MetricsQuerySchema = QuerySchema.extend({
 })
 
 function query2sql(query: z.infer<typeof MetricsQuerySchema>, event: H3Event): string {
-  const filter = query2filter(query)
   const { dataset } = useRuntimeConfig(event)
-
-  // @ts-expect-error todo
-  const sql = select(`${logsMap[query.type]} as name, SUM(_sample_interval) as count`).from(dataset).where(filter).groupBy('name').orderBy('count DESC').limit(query.limit)
-  appendTimeFilter(sql, query)
+  // @ts-expect-error dynamic column
+  const sql = select(`${logsMap[query.type]} as name, SUM(_sample_interval) as count`).from(dataset)
+  buildStatsWhere(sql, query)
+  sql.groupBy('name').orderBy('count DESC').limit(query.limit)
   return sql.toString()
 }
 

@@ -13,6 +13,7 @@ const props = defineProps({
 })
 
 const id = inject('id')
+const slug = inject('slug', ref(''))
 const startAt = inject('startAt')
 const endAt = inject('endAt')
 
@@ -28,6 +29,7 @@ async function getLinkMetrics() {
     query: {
       type: props.type,
       id: id.value,
+      slug: slug.value,
       startAt: startAt.value,
       endAt: endAt.value,
     },

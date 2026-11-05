@@ -6,6 +6,7 @@ const views = ref([])
 const chart = computed(() => views.value.length > 1 ? AreaChart : BarChart)
 
 const id = inject('id')
+const slug = inject('slug', ref(''))
 const startAt = inject('startAt')
 const endAt = inject('endAt')
 
@@ -22,6 +23,7 @@ async function getLinkViews() {
   const { data } = await useAPI('/api/stats/views', {
     query: {
       id: id.value,
+      slug: slug.value,
       unit: getUnit(startAt.value, endAt.value),
       clientTimezone: getTimeZone(),
       startAt: startAt.value,

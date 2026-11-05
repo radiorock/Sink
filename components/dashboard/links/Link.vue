@@ -1,5 +1,5 @@
 <script setup>
-import { CalendarPlus2, Copy, CopyCheck, Eraser, Hourglass, Link as LinkIcon, QrCode, ShieldCheck, SquareChevronDown, SquarePen } from 'lucide-vue-next'
+import { CalendarPlus2, Copy, CopyCheck, Eraser, Hourglass, Link as LinkIcon, QrCode, SquareChevronDown, SquarePen, ShieldCheck, Tag, MousePointerClick, Users } from 'lucide-vue-next'
 import { useClipboard } from '@vueuse/core'
 import { toast } from 'vue-sonner'
 import { parseURL } from 'ufo'
@@ -33,8 +33,7 @@ function updateLink(link, type) {
 }
 
 const isExpired = computed(() => {
-  if (!props.link.expiration)
-    return false
+  if (!props.link.expiration) return false
   return Math.floor(Date.now() / 1000) > props.link.expiration
 })
 </script>
@@ -185,12 +184,27 @@ const isExpired = computed(() => {
         </Popover>
       </div>
 
-      <!-- 标签展示 -->
-      <div v-if="link.tags && link.tags.length" class="flex flex-wrap gap-1">
+      <!-- 实时点击量指标与标签栏 (真实物理统计直接呈现) -->
+      <div class="flex flex-wrap items-center gap-1.5 pt-1">
+        <span
+          class="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold rounded bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400 border border-blue-200/60 dark:border-blue-800/60 font-mono shadow-xs"
+          title="累计访问次数 (PV)"
+        >
+          <MousePointerClick class="w-3 h-3 text-blue-600" />
+          <span>{{ link.visits || 0 }} 访问</span>
+        </span>
+        <span
+          class="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold rounded bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 font-mono"
+          title="独立访客人数 (UV)"
+        >
+          <Users class="w-3 h-3 text-gray-500" />
+          <span>{{ link.visitors || 0 }} 访客</span>
+        </span>
+
         <span
           v-for="t in link.tags"
           :key="t"
-          class="px-2 py-0.5 text-[10px] rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-mono"
+          class="px-2 py-0.5 text-[10px] rounded-md bg-gray-100 dark:bg-gray-850 text-gray-600 dark:text-gray-300 font-mono"
         >
           #{{ t }}
         </span>

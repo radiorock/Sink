@@ -1,26 +1,31 @@
 <script setup>
-const slug = useRoute().query.slug
+const route = useRoute()
+const slugParam = computed(() => route.query.slug || '')
 
 const link = ref({})
 const id = computed(() => link.value.id)
+const currentSlug = computed(() => link.value.slug || slugParam.value)
 
 provide('id', id)
+provide('slug', currentSlug)
 
 async function getLink() {
   const data = await useAPI('/api/link/query', {
     query: {
-      slug,
+      slug: slugParam.value,
     },
   })
-  // data.id = 'y1c4fhirl5'
-  link.value = data
+  link.value = data || {}
 }
 
-function updateLink(link, type) {
+function updateLink(newLink, type) {
   if (type === 'delete') {
     navigateTo('/dashboard/links', {
       replace: true,
     })
+  }
+  else if (newLink) {
+    link.value = newLink
   }
 }
 
