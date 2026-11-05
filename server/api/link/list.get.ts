@@ -42,13 +42,12 @@ export default eventHandler(async (event) => {
       if (link) {
         const slug = link.slug
         const stat = statsMap[slug] || { visits: 0, visitors: 0 }
-        const baseVisits = Number(link.baseVisits) || 0
-        const baseVisitors = Number(link.baseVisitors) || 0
+        const baseStats = getHistoricalBaseStats(slug)
         return {
           ...metadata,
           ...link,
-          visits: stat.visits + baseVisits,
-          visitors: stat.visitors + baseVisitors,
+          visits: stat.visits + baseStats.visits,
+          visitors: stat.visitors + baseStats.visitors,
         }
       }
       return link

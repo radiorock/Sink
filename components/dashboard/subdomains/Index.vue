@@ -1,21 +1,19 @@
 <script setup>
-import { 
-  Globe, 
-  Plus, 
-  Copy, 
-  CopyCheck, 
-  QrCode, 
-  SquarePen, 
-  Trash2, 
-  ExternalLink, 
-  Loader, 
-  CheckCircle2, 
-  PauseCircle, 
+import {
   Calendar,
-  AlertCircle
+  CheckCircle2,
+  Copy,
+  CopyCheck,
+  ExternalLink,
+  Globe,
+  Loader,
+  PauseCircle,
+  Plus,
+  QrCode,
+  SquarePen,
+  Trash2,
 } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
-import { useClipboard } from '@vueuse/core'
 import QRCode from '../links/QRCode.vue'
 
 const subdomains = ref([])
@@ -114,6 +112,7 @@ async function handleUpdate() {
 }
 
 async function handleDelete(item) {
+  // eslint-disable-next-line no-alert
   if (!confirm(`确定要彻底删除专属二级域名 [${item.fullDomain}] 吗？删除后该域名将立即停止跳转服务！`)) {
     return
   }
@@ -184,7 +183,9 @@ onMounted(() => {
                   .showtime.ing
                 </span>
               </div>
-              <p class="text-xs text-gray-400 mt-1">仅支持英文字母与数字，生成后即为唯一专属域名。</p>
+              <p class="text-xs text-gray-400 mt-1">
+                仅支持英文字母与数字，生成后即为唯一专属域名。
+              </p>
             </div>
 
             <div>
@@ -340,7 +341,9 @@ onMounted(() => {
 
           <!-- 目标跳转地址 -->
           <div class="space-y-1">
-            <div class="text-[11px] font-medium text-gray-400">当前目标跳转地址：</div>
+            <div class="text-[11px] font-medium text-gray-400">
+              当前目标跳转地址：
+            </div>
             <p
               class="text-xs font-mono text-gray-600 dark:text-gray-300 truncate bg-muted/40 p-1.5 rounded"
               :title="item.url"
@@ -383,7 +386,9 @@ onMounted(() => {
       class="text-center py-16 bg-white dark:bg-gray-900 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800"
     >
       <Globe class="w-12 h-12 mx-auto text-gray-300 mb-3" />
-      <h3 class="text-base font-bold text-gray-800 dark:text-gray-200">暂无生效中的二级域名</h3>
+      <h3 class="text-base font-bold text-gray-800 dark:text-gray-200">
+        暂无生效中的二级域名
+      </h3>
       <p class="text-xs text-gray-500 mt-1 max-w-sm mx-auto">
         点击右上角“新增专属二级域名”，可立即为签约艺人或重大演出建立专属域名通道。
       </p>
@@ -427,8 +432,12 @@ onMounted(() => {
               v-model="currentEdit.status"
               class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-gray-900 border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-600"
             >
-              <option value="active">运行中 (正常跳转)</option>
-              <option value="paused">已暂停 (临时维护或下架)</option>
+              <option value="active">
+                运行中 (正常跳转)
+              </option>
+              <option value="paused">
+                已暂停 (临时维护或下架)
+              </option>
             </select>
           </div>
 
@@ -468,7 +477,9 @@ onMounted(() => {
     <Dialog v-model:open="qrDialogOpen">
       <DialogContent class="max-w-xs text-center">
         <DialogHeader>
-          <DialogTitle class="text-center font-bold text-base">现场物料二维码</DialogTitle>
+          <DialogTitle class="text-center font-bold text-base">
+            现场物料二维码
+          </DialogTitle>
           <DialogDescription class="text-center text-xs">
             {{ currentQrTitle }}
           </DialogDescription>
@@ -479,7 +490,9 @@ onMounted(() => {
             :data="currentQrUrl"
           />
         </div>
-        <p class="text-xs text-gray-400 font-mono break-all">{{ currentQrUrl }}</p>
+        <p class="text-xs text-gray-400 font-mono break-all">
+          {{ currentQrUrl }}
+        </p>
       </DialogContent>
     </Dialog>
   </div>

@@ -4,11 +4,16 @@ const currentUser = ref(null)
 
 const activeTab = computed(() => {
   // 保持与当前页面匹配
-  if (route.path.startsWith('/dashboard/links')) return '/dashboard/links'
-  if (route.path.startsWith('/dashboard/subdomains')) return '/dashboard/subdomains'
-  if (route.path.startsWith('/dashboard/analysis')) return '/dashboard/analysis'
-  if (route.path.startsWith('/dashboard/audit')) return '/dashboard/audit'
-  if (route.path.startsWith('/dashboard/users')) return '/dashboard/users'
+  if (route.path.startsWith('/dashboard/links'))
+    return '/dashboard/links'
+  if (route.path.startsWith('/dashboard/subdomains'))
+    return '/dashboard/subdomains'
+  if (route.path.startsWith('/dashboard/analysis'))
+    return '/dashboard/analysis'
+  if (route.path.startsWith('/dashboard/audit'))
+    return '/dashboard/audit'
+  if (route.path.startsWith('/dashboard/users'))
+    return '/dashboard/users'
   return route.path
 })
 
@@ -17,7 +22,7 @@ onMounted(async () => {
     const res = await useAPI('/api/user/current')
     currentUser.value = res
   }
-  catch (e) {
+  catch {
     // 静默忽略
   }
 })

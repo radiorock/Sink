@@ -25,7 +25,7 @@ export default eventHandler(async (event) => {
       const userList: string[] = await KV.get('users:list', { type: 'json' }) || []
       for (const username of userList) {
         const u = await KV.get(`user:${username}`, { type: 'json' })
-        if (u && u.status === 'active' && (u.password === token || u.username === token)) {
+        if (u && u.status === 'active' && u.password === token) {
           isAuthenticated = true
           break
         }

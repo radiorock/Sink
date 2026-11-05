@@ -1,5 +1,5 @@
 <script setup>
-import { ShieldCheck, Lock, Loader, Eye, EyeOff, CheckCircle2 } from 'lucide-vue-next'
+import { CheckCircle2, Eye, EyeOff, Loader, Lock, ShieldCheck } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 
 const token = ref('')
@@ -21,9 +21,9 @@ function initTurnstile() {
       const container = document.getElementById('turnstile-container')
       if (container && !turnstileWidgetId.value) {
         turnstileWidgetId.value = window.turnstile.render('#turnstile-container', {
-          sitekey: siteKey,
-          theme: 'auto',
-          callback: (t) => {
+          'sitekey': siteKey,
+          'theme': 'auto',
+          'callback': (t) => {
             turnstileToken.value = t
             turnstileStatus.value = 'verified'
           },

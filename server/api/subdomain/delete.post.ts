@@ -16,7 +16,8 @@ export default eventHandler(async (event) => {
   const body = await readValidatedBody(event, DeleteSubdomainSchema.parse)
   const { cloudflare } = event.context
   const KV = cloudflare?.env?.KV
-  if (!KV) throw createError({ status: 500, statusText: 'KV unavailable' })
+  if (!KV)
+    throw createError({ status: 500, statusText: 'KV unavailable' })
 
   const existing: SubdomainChannel | null = await KV.get(`subdomain:${body.subdomain}`, { type: 'json' })
   if (!existing) {

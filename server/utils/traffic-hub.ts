@@ -46,7 +46,8 @@ export async function hashPassword(plain: string): Promise<string> {
 }
 
 export function verifyPassword(plain: string, stored: string, hash?: string): boolean {
-  if (plain === stored) return true
+  if (plain === stored)
+    return true
   // 支持哈希比对
   if (hash && hash.length === 64) {
     // 异步计算比对
@@ -99,7 +100,7 @@ export async function getOperatorContext(event: H3Event): Promise<{
     const userKeys: string[] = await KV.get('users:list', { type: 'json' }) || []
     for (const u of userKeys) {
       const uData: HubUser | null = await KV.get(`user:${u}`, { type: 'json' })
-      if (uData && (uData.password === token || uData.username === token)) {
+      if (uData && uData.password === token) {
         return {
           username: uData.username,
           name: uData.name || uData.username,
@@ -120,6 +121,63 @@ export async function getOperatorContext(event: H3Event): Promise<{
   }
 }
 
+export interface HistoricalAuditBucket {
+  date: string
+  startTs: number
+  endTs: number
+  visits: number
+  visitors: number
+}
+
+// 权威物理审计底账（来源：Cloudflare GraphQL workersInvocationsAdaptive 48小时核心遥测底账）
+export const HISTORICAL_AUDIT_DATA: Record<string, HistoricalAuditBucket[]> = {
+  ten: [
+    {
+      date: '2026-11-04',
+      startTs: 1793721600, // 2026-11-04 00:00:00 UTC+8
+      endTs: 1793807999, // 2026-11-04 23:59:59 UTC+8
+      visits: 9612,
+      visitors: 6650,
+    },
+    {
+      date: '2026-11-05',
+      startTs: 1793808000, // 2026-11-05 00:00:00 UTC+8
+      endTs: 1793894399, // 2026-11-05 23:59:59 UTC+8
+      visits: 744,
+      visitors: 470,
+    },
+  ],
+}
+
+/**
+ * 按照查询的时间区间 [startAt, endAt]，精确计算匹配的历史底账增量，杜绝全局盲目叠加导致的口径冲突
+ */
+export function getHistoricalBaseStats(slug?: string, startAt?: number, endAt?: number): { visits: number, visitors: number } {
+  let visits = 0
+  let visitors = 0
+
+  const targetBuckets: HistoricalAuditBucket[] = []
+  if (slug) {
+    if (HISTORICAL_AUDIT_DATA[slug]) {
+      targetBuckets.push(...HISTORICAL_AUDIT_DATA[slug])
+    }
+  }
+  else {
+    // 全站大盘：聚合所有短链与二级域名的底账
+    Object.values(HISTORICAL_AUDIT_DATA).forEach(list => targetBuckets.push(...list))
+  }
+
+  for (const b of targetBuckets) {
+    const isOverlapping = (!startAt || b.endTs >= startAt) && (!endAt || b.startTs <= endAt)
+    if (isOverlapping) {
+      visits += b.visits
+      visitors += b.visitors
+    }
+  }
+
+  return { visits, visitors }
+}
+
 export async function recordAuditLog(event: H3Event, options: {
   action: string
   actionLabel: string
@@ -127,7 +185,8 @@ export async function recordAuditLog(event: H3Event, options: {
   details: string
 }) {
   const { cloudflare } = event.context
-  if (!cloudflare?.env?.KV) return
+  if (!cloudflare?.env?.KV)
+    return
 
   const KV = cloudflare.env.KV
   const operator = await getOperatorContext(event)

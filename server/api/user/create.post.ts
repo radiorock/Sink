@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 const CreateUserSchema = z.object({
-  username: z.string().trim().min(2).max(32).regex(/^[a-zA-Z0-9_-]+$/, '用户名仅支持英文字母、数字、下划线及减号'),
+  username: z.string().trim().min(2).max(32).regex(/^[\w-]+$/, '用户名仅支持英文字母、数字、下划线及减号'),
   name: z.string().trim().min(1).max(32),
   role: z.enum(['admin', 'operator', 'viewer']),
   password: z.string().trim().min(6, '密码至少6位'),
@@ -19,7 +19,8 @@ export default eventHandler(async (event) => {
   const body = await readValidatedBody(event, CreateUserSchema.parse)
   const { cloudflare } = event.context
   const KV = cloudflare?.env?.KV
-  if (!KV) throw createError({ status: 500, statusText: 'KV unavailable' })
+  if (!KV)
+    throw createError({ status: 500, statusText: 'KV unavailable' })
 
   const existing = await KV.get(`user:${body.username}`, { type: 'json' })
   if (existing) {

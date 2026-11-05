@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<BaseChartProps<T> & {
   roundedCorners?: number
 }>(), {
   type: 'grouped',
-  margin: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
+  margin: () => ({ top: 10, bottom: 32, left: 35, right: 20 }),
   filterOpacity: 0.2,
   roundedCorners: 0,
   showXAxis: true,
@@ -89,6 +89,7 @@ const selectorsBar = computed(() => props.type === 'grouped' ? GroupedBar.select
         v-if="showXAxis"
         type="x"
         :tick-format="xFormatter ?? ((v: number) => data[v]?.[index])"
+        :tick-values="data.map((_, i) => i)"
         :grid-line="false"
         :tick-line="false"
         tick-text-color="hsl(var(--vis-text-color))"

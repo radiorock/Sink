@@ -1,9 +1,9 @@
 # `ten.showtime.ing` 历史访问统计物理找回与审计归档报告
 
-> **生成时间**：2026-11-05 16:45:00 (UTC+8)  
-> **数据采集源**：Cloudflare GraphQL Analytics 核心遥测系统 (`workersInvocationsAdaptive`)  
-> **绑定 Worker 脚本**：`ten-showtime-redirect` (承载 `ten.showtime.ing` $\rightarrow$ 艺人 TEN 有赞商城)  
-> **审计时间跨度**：2026-11-04 00:00:00 至 2026-11-05 16:40:00 (过去 48 小时)  
+> **生成时间**：2026-11-05 16:45:00 (UTC+8)
+> **数据采集源**：Cloudflare GraphQL Analytics 核心遥测系统 (`workersInvocationsAdaptive`)
+> **绑定 Worker 脚本**：`ten-showtime-redirect` (承载 `ten.showtime.ing` $\rightarrow$ 艺人 TEN 有赞商城)
+> **审计时间跨度**：2026-11-04 00:00:00 至 2026-11-05 16:40:00 (过去 48 小时)
 > **归档性质**：权威物理底账（不污染应用层时序数据库，作为客观审计依据长期存查）
 
 ---

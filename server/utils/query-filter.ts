@@ -43,7 +43,8 @@ export function buildStatsWhere(sql: SelectStatement, query: Query) {
 
   // 2. 其余维度过滤 (如 referer, country, os, browser 等)
   Object.keys(logsMap).forEach((key) => {
-    if (key === 'slug' || key === 'url') return
+    if (key === 'slug' || key === 'url')
+      return
     // @ts-expect-error dynamic key
     if (query[key]) {
       // @ts-expect-error dynamic key

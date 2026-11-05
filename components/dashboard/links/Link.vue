@@ -1,5 +1,5 @@
 <script setup>
-import { CalendarPlus2, Copy, CopyCheck, Eraser, Hourglass, Link as LinkIcon, QrCode, SquareChevronDown, SquarePen, ShieldCheck, Tag, MousePointerClick, Users } from 'lucide-vue-next'
+import { CalendarPlus2, Copy, CopyCheck, Eraser, Hourglass, Link as LinkIcon, MousePointerClick, QrCode, ShieldCheck, SquareChevronDown, SquarePen, Users } from 'lucide-vue-next'
 import { useClipboard } from '@vueuse/core'
 import { toast } from 'vue-sonner'
 import { parseURL } from 'ufo'
@@ -33,7 +33,8 @@ function updateLink(link, type) {
 }
 
 const isExpired = computed(() => {
-  if (!props.link.expiration) return false
+  if (!props.link.expiration)
+    return false
   return Math.floor(Date.now() / 1000) > props.link.expiration
 })
 </script>

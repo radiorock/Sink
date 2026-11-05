@@ -1,16 +1,14 @@
 <script setup>
-import { 
-  Users, 
-  UserPlus, 
-  ShieldCheck, 
-  KeyRound, 
-  Trash2, 
-  Loader, 
-  Calendar, 
-  Terminal, 
-  CheckCircle2, 
-  Ban, 
-  Edit3
+import {
+  Ban,
+  Calendar,
+  CheckCircle2,
+  Edit3,
+  KeyRound,
+  Loader,
+  Trash2,
+  UserPlus,
+  Users,
 } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 
@@ -146,6 +144,7 @@ async function handleDeleteUser(user) {
     toast.error('系统超级总控账号禁止删除')
     return
   }
+  // eslint-disable-next-line no-alert
   if (!confirm(`确定要彻底注销并删除成员 [${user.name} (${user.username})] 吗？删除后该员工将无法再登录后台！`)) {
     return
   }
@@ -173,8 +172,10 @@ function getRoleBadge(role) {
 }
 
 function getRoleLabel(role) {
-  if (role === 'admin') return '超级管理员 (总控)'
-  if (role === 'operator') return '项目/运营执行'
+  if (role === 'admin')
+    return '超级管理员 (总控)'
+  if (role === 'operator')
+    return '项目/运营执行'
   return '只读观察员'
 }
 
@@ -228,9 +229,15 @@ onMounted(() => {
                 v-model="createForm.role"
                 class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-gray-900 border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-600"
               >
-                <option value="operator">项目/运营执行 (支持管理短链与二级域名)</option>
-                <option value="admin">超级管理员 (拥有全部设置与用户权限)</option>
-                <option value="viewer">只读观察员 (仅可查看大盘与通道，禁止修改)</option>
+                <option value="operator">
+                  项目/运营执行 (支持管理短链与二级域名)
+                </option>
+                <option value="admin">
+                  超级管理员 (拥有全部设置与用户权限)
+                </option>
+                <option value="viewer">
+                  只读观察员 (仅可查看大盘与通道，禁止修改)
+                </option>
               </select>
             </div>
 
@@ -437,9 +444,15 @@ onMounted(() => {
               :disabled="editForm.username === 'admin'"
               class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-gray-900 border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-600 disabled:opacity-50"
             >
-              <option value="operator">项目/运营执行</option>
-              <option value="admin">超级管理员</option>
-              <option value="viewer">只读观察员</option>
+              <option value="operator">
+                项目/运营执行
+              </option>
+              <option value="admin">
+                超级管理员
+              </option>
+              <option value="viewer">
+                只读观察员
+              </option>
             </select>
           </div>
 
@@ -450,8 +463,12 @@ onMounted(() => {
               :disabled="editForm.username === 'admin'"
               class="w-full px-3 py-2 text-sm border rounded-lg dark:bg-gray-900 border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-600 disabled:opacity-50"
             >
-              <option value="active">正常启用</option>
-              <option value="disabled">已停用 (禁止登录)</option>
+              <option value="active">
+                正常启用
+              </option>
+              <option value="disabled">
+                已停用 (禁止登录)
+              </option>
             </select>
           </div>
         </div>

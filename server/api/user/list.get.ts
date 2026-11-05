@@ -9,7 +9,8 @@ export default eventHandler(async (event) => {
 
   const { cloudflare } = event.context
   const KV = cloudflare?.env?.KV
-  if (!KV) return { users: [] }
+  if (!KV)
+    return { users: [] }
 
   await ensureInitialHubData(KV)
 

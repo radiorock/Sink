@@ -37,7 +37,7 @@ async function getLinkViews() {
   })
 }
 
-const stopWatchTime = watch([startAt, endAt], getLinkViews)
+const stopWatchTime = watch([startAt, endAt, id, slug], getLinkViews)
 
 onMounted(async () => {
   getLinkViews()
@@ -48,11 +48,14 @@ onBeforeUnmount(() => {
 })
 
 function formatTime(tick) {
-  if (Number.isInteger(tick) && views.value[tick]) {
-    if (getUnit(startAt.value, endAt.value) === 'hour')
-      return views.value[tick].time.split(' ')[1] || ''
-
-    return views.value[tick].time
+  const idx = Math.round(Number(tick))
+  const item = views.value[idx]
+  if (item && item.time) {
+    const t = String(item.time)
+    if (getUnit(startAt.value, endAt.value) === 'hour' && t.includes(' ')) {
+      return `${t.split(' ')[1]}:00`
+    }
+    return t.length >= 10 ? t.slice(5).replace('-', '/') : t
   }
   return ''
 }

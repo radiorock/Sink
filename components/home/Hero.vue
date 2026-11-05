@@ -1,5 +1,5 @@
 <script setup>
-import { AreaChart, ArrowRight, ShieldCheck, Zap, BarChart3 } from 'lucide-vue-next'
+import { AreaChart, ArrowRight, BarChart3, ShieldCheck, Zap } from 'lucide-vue-next'
 
 const { title, description } = useAppConfig()
 </script>
@@ -12,12 +12,12 @@ const { title, description } = useAppConfig()
           <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
           ShowTime 智能分发服务平台
         </div>
-        
+
         <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-gray-950 dark:text-gray-50 leading-[1.15]">
           让每一次登台与宣发<br>
           <span class="text-red-600">直达万千观众与粉丝</span>
         </h1>
-        
+
         <p class="max-w-2xl mt-5 text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
           {{ description }}。为演出门票、演出周边、官方宣发物料提供毫秒级智能重定向与实时渠道转化分析。
         </p>
@@ -51,18 +51,30 @@ const { title, description } = useAppConfig()
           <div class="mt-6 grid grid-cols-3 gap-3 text-center">
             <div class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
               <Zap class="w-4 h-4 mx-auto text-red-600 mb-1" />
-              <div class="text-xs font-bold text-gray-800 dark:text-gray-200">毫秒边缘</div>
-              <div class="text-[10px] text-gray-400 mt-0.5">极速分发</div>
+              <div class="text-xs font-bold text-gray-800 dark:text-gray-200">
+                毫秒边缘
+              </div>
+              <div class="text-[10px] text-gray-400 mt-0.5">
+                极速分发
+              </div>
             </div>
             <div class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
               <BarChart3 class="w-4 h-4 mx-auto text-red-600 mb-1" />
-              <div class="text-xs font-bold text-gray-800 dark:text-gray-200">精准画像</div>
-              <div class="text-[10px] text-gray-400 mt-0.5">转化溯源</div>
+              <div class="text-xs font-bold text-gray-800 dark:text-gray-200">
+                精准画像
+              </div>
+              <div class="text-[10px] text-gray-400 mt-0.5">
+                转化溯源
+              </div>
             </div>
             <div class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
               <ShieldCheck class="w-4 h-4 mx-auto text-red-600 mb-1" />
-              <div class="text-xs font-bold text-gray-800 dark:text-gray-200">多权隔离</div>
-              <div class="text-[10px] text-gray-400 mt-0.5">安全管控</div>
+              <div class="text-xs font-bold text-gray-800 dark:text-gray-200">
+                多权隔离
+              </div>
+              <div class="text-[10px] text-gray-400 mt-0.5">
+                安全管控
+              </div>
             </div>
           </div>
         </div>

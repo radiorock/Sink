@@ -29,7 +29,9 @@ const { title: siteTitle } = useAppConfig()
       </BreadcrumbItem>
       <BreadcrumbSeparator />
       <BreadcrumbItem>
-        <BreadcrumbPage class="font-medium text-gray-900 dark:text-gray-100">{{ props.title }}</BreadcrumbPage>
+        <BreadcrumbPage class="font-medium text-gray-900 dark:text-gray-100">
+          {{ props.title }}
+        </BreadcrumbPage>
       </BreadcrumbItem>
     </BreadcrumbList>
 

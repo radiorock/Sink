@@ -28,7 +28,8 @@ export default eventHandler(async (event) => {
         }
       }
       catch (e: any) {
-        if (e?.status === 403) throw e
+        if (e?.status === 403)
+          throw e
         console.error('Turnstile verification error:', e)
       }
     }

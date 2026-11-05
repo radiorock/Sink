@@ -1,11 +1,11 @@
 <script setup>
-import { 
-  Sparkles, 
-  Share2, 
-  Zap, 
-  QrCode, 
-  Users2, 
-  BarChart3 
+import {
+  BarChart3,
+  QrCode,
+  Share2,
+  Sparkles,
+  Users2,
+  Zap,
 } from 'lucide-vue-next'
 
 const features = ref([

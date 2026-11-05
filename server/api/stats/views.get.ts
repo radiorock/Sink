@@ -27,39 +27,35 @@ export default eventHandler(async (event) => {
   const sql = query2sql(query, event)
   const res: any = await useWAE(event, sql)
 
-  // 若针对 ten 短链或全局大盘，融合 Cloudflare 物理审计时序
-  if (query.slug === 'ten' || query.id === 'q72yjw5dyw' || (!query.slug && !query.id)) {
+  // 融合历史物理审计时序 (仅当请求对象为 ten 短链或全局大盘时)
+  const isTenOrAll = !query.slug || query.slug === 'ten' || query.id === 'q72yjw5dyw'
+  if (isTenOrAll) {
     const list = Array.isArray(res?.data) ? [...res.data] : []
+    const targetSlug = query.slug || (query.id === 'q72yjw5dyw' ? 'ten' : '')
+    const buckets = targetSlug ? (HISTORICAL_AUDIT_DATA[targetSlug] || []) : Object.values(HISTORICAL_AUDIT_DATA).flat()
 
-    // 融合 2026-11-04 真实流量波峰 (Cloudflare 官方统计: 9,612 次)
-    const idx04 = list.findIndex((item: any) => String(item.time).startsWith('2026-11-04'))
-    if (idx04 >= 0) {
-      list[idx04].visits = String(Number(list[idx04].visits || 0) + 9612)
-      list[idx04].visitors = String(Number(list[idx04].visitors || 0) + 6650)
-    }
-    else {
-      list.unshift({
-        time: query.unit === 'hour' ? '2026-11-04 13' : '2026-11-04',
-        visits: '9612',
-        visitors: '6650',
-      })
-    }
+    for (const b of buckets) {
+      // 检查当前查询的时间区间 [startAt, endAt] 是否包含该底账桶
+      const isOverlapping = (!query.startAt || b.endTs >= query.startAt) && (!query.endAt || b.startTs <= query.endAt)
+      if (!isOverlapping)
+        continue
 
-    // 融合 2026-11-05 官方前半日流量 (Cloudflare 官方统计: 744 次)
-    const idx05 = list.findIndex((item: any) => String(item.time).startsWith('2026-11-05'))
-    if (idx05 >= 0) {
-      list[idx05].visits = String(Number(list[idx05].visits || 0) + 744)
-      list[idx05].visitors = String(Number(list[idx05].visitors || 0) + 470)
-    }
-    else {
-      list.push({
-        time: query.unit === 'hour' ? '2026-11-05 13' : '2026-11-05',
-        visits: '744',
-        visitors: '470',
-      })
+      const targetTime = query.unit === 'hour' ? `${b.date} 13` : b.date
+      const existing = list.find((item: any) => String(item.time).startsWith(b.date))
+      if (existing) {
+        existing.visits = String((Number(existing.visits) || 0) + b.visits)
+        existing.visitors = String((Number(existing.visitors) || 0) + b.visitors)
+      }
+      else {
+        list.push({
+          time: targetTime,
+          visits: String(b.visits),
+          visitors: String(b.visitors),
+        })
+      }
     }
 
-    // 按时间升序排序
+    // 按时序严格升序排列
     list.sort((a, b) => String(a.time).localeCompare(String(b.time)))
 
     if (res) {

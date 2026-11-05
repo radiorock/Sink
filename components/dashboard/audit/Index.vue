@@ -1,14 +1,14 @@
 <script setup>
-import { 
-  ShieldCheck, 
-  Search, 
-  Clock, 
-  User, 
-  MapPin, 
-  Terminal, 
-  Loader, 
+import {
+  Clock,
+  FileText,
+  Loader,
+  MapPin,
   RefreshCw,
-  FileText
+  Search,
+  ShieldCheck,
+  Terminal,
+  User,
 } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 
@@ -31,15 +31,16 @@ async function fetchLogs() {
 }
 
 const filteredLogs = computed(() => {
-  if (!searchQuery.value) return logs.value
+  if (!searchQuery.value)
+    return logs.value
   const q = searchQuery.value.toLowerCase().trim()
-  return logs.value.filter(item => 
-    item.target.toLowerCase().includes(q) ||
-    item.operatorName.toLowerCase().includes(q) ||
-    item.operatorUsername.toLowerCase().includes(q) ||
-    item.actionLabel.toLowerCase().includes(q) ||
-    item.details.toLowerCase().includes(q) ||
-    item.ip.includes(q)
+  return logs.value.filter(item =>
+    item.target.toLowerCase().includes(q)
+    || item.operatorName.toLowerCase().includes(q)
+    || item.operatorUsername.toLowerCase().includes(q)
+    || item.actionLabel.toLowerCase().includes(q)
+    || item.details.toLowerCase().includes(q)
+    || item.ip.includes(q),
   )
 })
 
@@ -171,7 +172,9 @@ onMounted(() => {
       class="text-center py-16 bg-white dark:bg-gray-900 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800"
     >
       <FileText class="w-12 h-12 mx-auto text-gray-300 mb-3" />
-      <h3 class="text-base font-bold text-gray-800 dark:text-gray-200">暂无匹配的操作审计日志</h3>
+      <h3 class="text-base font-bold text-gray-800 dark:text-gray-200">
+        暂无匹配的操作审计日志
+      </h3>
       <p class="text-xs text-gray-500 mt-1">
         当员工在后台执行新增、编辑或删除操作时，系统将在此处自动记录完整的责任流水。
       </p>
