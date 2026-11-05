@@ -12,7 +12,6 @@ import {
   Modules,
 } from 'ua-parser-js/extensions'
 import { parseAcceptLanguage } from 'intl-parse-accept-language'
-import { getFlag } from '@/utils/flag'
 
 function toBlobNumber(blob: string) {
   return +blob.replace(/\D/g, '')
@@ -65,7 +64,8 @@ export function useAccessLog(event: H3Event) {
   const { host: referer } = parseURL(getHeader(event, 'referer'))
 
   const acceptLanguage = getHeader(event, 'accept-language') || ''
-  const language = (parseAcceptLanguage(acceptLanguage) || [])[0]
+  const rawLang = (parseAcceptLanguage(acceptLanguage) || [])[0] || ''
+  const language = rawLang.split(',')[0].split(';')[0].trim()
 
   const userAgent = getHeader(event, 'user-agent') || ''
   const uaInfo = (new UAParser(userAgent, {
@@ -76,8 +76,8 @@ export function useAccessLog(event: H3Event) {
   const { request: { cf } } = event.context.cloudflare
   const link = event.context.link || {}
 
-  const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
-  const countryName = regionNames.of(cf?.country || 'WD') // fallback to "Worldwide"
+  const regionNames = new Intl.DisplayNames(['zh-CN', 'zh', 'en'], { type: 'region' })
+  const countryName = regionNames.of(cf?.country || 'WD') || '全球'
   const accessLogs = {
     url: link.url,
     slug: link.slug,
@@ -85,8 +85,8 @@ export function useAccessLog(event: H3Event) {
     ip,
     referer,
     country: cf?.country,
-    region: `${getFlag(cf?.country)} ${[cf?.region, countryName].filter(Boolean).join(',')}`,
-    city: `${getFlag(cf?.country)} ${[cf?.city, countryName].filter(Boolean).join(',')}`,
+    region: [cf?.region, countryName].filter(Boolean).join(', '),
+    city: [cf?.city, countryName].filter(Boolean).join(', '),
     timezone: cf?.timezone,
     language,
     os: uaInfo?.os?.name,

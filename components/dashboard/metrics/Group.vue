@@ -1,5 +1,5 @@
 <script setup>
-defineProps({
+const props = defineProps({
   tabs: {
     type: Array,
     required: true,
@@ -24,6 +24,10 @@ const tabNameMap = {
 function type2name(type) {
   return tabNameMap[type] || type
 }
+
+const isFingerprintGroup = computed(() => {
+  return props.tabs.some(t => ['language', 'timezone', 'device', 'deviceType', 'os', 'browser', 'browserType'].includes(t))
+})
 </script>
 
 <template>
@@ -31,15 +35,24 @@ function type2name(type) {
     :default-value="tabs[0]"
     class="flex flex-col"
   >
-    <TabsList class="w-fit">
-      <TabsTrigger
-        v-for="tab in tabs"
-        :key="tab"
-        :value="tab"
+    <div class="flex items-center justify-between gap-2 mb-1">
+      <TabsList class="w-fit">
+        <TabsTrigger
+          v-for="tab in tabs"
+          :key="tab"
+          :value="tab"
+        >
+          {{ type2name(tab) }}
+        </TabsTrigger>
+      </TabsList>
+      <span
+        v-if="isFingerprintGroup"
+        class="text-[11px] text-muted-foreground hidden sm:inline-block font-mono px-2 py-0.5 rounded bg-muted/60"
+        title="客户端软硬件指纹基于新版边缘遥测引擎实时采集样本"
       >
-        {{ type2name(tab) }}
-      </TabsTrigger>
-    </TabsList>
+        新引擎实时样本
+      </span>
+    </div>
     <TabsContent
       v-for="tab in tabs"
       :key="tab"
