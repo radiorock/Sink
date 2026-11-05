@@ -76,7 +76,7 @@ async function copyReport() {
   try {
     await navigator.clipboard.writeText(reportData.value.plainTextReport)
     copied.value = true
-    toast.success('高管汇报纯文本专报已复制到剪贴板，可直接发送')
+    toast.success('文字简报已复制到剪贴板，可直接发送')
     setTimeout(() => {
       copied.value = false
     }, 2500)
@@ -99,14 +99,14 @@ function printReport() {
         <div>
           <div class="flex items-center gap-2.5">
             <span class="inline-flex items-center px-2 py-0.5 text-[11px] font-mono font-semibold rounded bg-secondary text-secondary-foreground border border-border">
-              {{ reportData?.projectMeta.slug ? `PROJECT: ${reportData.projectMeta.slug.toUpperCase()}` : 'OVERVIEW' }}
+              {{ reportData?.projectMeta.slug ? `${reportData.projectMeta.slug.toUpperCase()} 专属通道` : '全站大盘' }}
             </span>
             <span class="text-xs text-muted-foreground font-mono">
               {{ reportData?.projectMeta.auditTimeRange }}
             </span>
           </div>
           <h2 class="text-xl font-bold tracking-tight text-foreground mt-1.5">
-            {{ reportData?.projectMeta.name }} · 商业运营与数据解读专报
+            {{ reportData?.projectMeta.name }} · 运营数据分析简报
           </h2>
           <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mt-1">
             <span class="inline-flex items-center gap-1">
@@ -132,7 +132,7 @@ function printReport() {
           >
             <Check v-if="copied" class="w-3.5 h-3.5 mr-1.5 text-emerald-600" />
             <Copy v-else class="w-3.5 h-3.5 mr-1.5 text-muted-foreground" />
-            {{ copied ? '已复制汇报文本' : '复制高管文本专报' }}
+            {{ copied ? '已复制文字简报' : '复制文字简报' }}
           </Button>
           <Button
             variant="secondary"
@@ -142,7 +142,7 @@ function printReport() {
             @click="printReport"
           >
             <Printer class="w-3.5 h-3.5 mr-1.5 text-muted-foreground" />
-            打印 / 归档 PDF
+            打印 / 导出 PDF
           </Button>
         </div>
       </div>
@@ -229,11 +229,11 @@ function printReport() {
       >
         <div class="space-y-3.5">
           <div class="flex items-center justify-between border-b border-border/50 pb-2.5">
-            <h3 class="text-sm font-semibold tracking-tight text-foreground uppercase">
+            <h3 class="text-sm font-semibold tracking-tight text-foreground">
               {{ sec.category }}
             </h3>
             <span class="text-[11px] text-muted-foreground font-mono">
-              SECTION {{ sec.id.toUpperCase() }}
+              模块 {{ String(sec.id).toUpperCase() }}
             </span>
           </div>
 

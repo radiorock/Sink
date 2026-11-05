@@ -254,9 +254,9 @@ export function generateProjectReport(input: ProjectAnalysisInput): ProjectAnaly
     },
   ]
 
-  // 7. 生成适合复制发送给老板/高管的专业纯文本报告 (无任何 emoji，规整对齐)
+  // 7. 生成适合复制发送的专业纯文本报告 (无任何 emoji，规整对齐)
   const plainTextReport = `=======================================================
-【项目商业审计与运营分析专报】
+【ShowTime 展泰文化 · 业务数据分析简报】
 项目代号: ${slug}
 所属业务: ${name}
 目标承载: ${targetPlatform} (${targetUrl})
