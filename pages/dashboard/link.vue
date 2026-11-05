@@ -1,5 +1,5 @@
 <script setup>
-import { FileText, LayoutDashboard } from 'lucide-vue-next'
+import { ArrowLeft, FileText, LayoutDashboard } from 'lucide-vue-next'
 
 const route = useRoute()
 const slugParam = computed(() => route.query.slug || '')
@@ -41,7 +41,21 @@ onMounted(() => {
 
 <template>
   <main class="space-y-6">
-    <DashboardBreadcrumb title="短链详情" />
+    <!-- 顶部返回通道与当前对象标头 -->
+    <div class="flex items-center justify-between pb-3 border-b border-border/70">
+      <NuxtLink
+        to="/dashboard/links"
+        class="inline-flex items-center text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group cursor-pointer"
+      >
+        <ArrowLeft class="w-4 h-4 mr-1.5 transition-transform group-hover:-translate-x-0.5" />
+        返回短链通道
+      </NuxtLink>
+      <div v-if="link.slug" class="flex items-center gap-2">
+        <span class="text-xs text-muted-foreground">当前短链:</span>
+        <span class="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-muted text-foreground">/{{ link.slug }}</span>
+      </div>
+    </div>
+
     <DashboardLinksLink
       v-if="link.id"
       :link="link"

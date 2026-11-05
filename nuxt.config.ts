@@ -34,7 +34,7 @@ export default defineNuxtConfig({
       ssr: false,
     },
     '/dashboard': {
-      redirect: '/dashboard/links',
+      redirect: '/dashboard/analysis',
     },
   },
 

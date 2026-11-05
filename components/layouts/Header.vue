@@ -2,8 +2,33 @@
 import { Ellipsis, X } from 'lucide-vue-next'
 import SwitchTheme from '../SwitchTheme.vue'
 
+const route = useRoute()
 const showMenu = ref(false)
 const { title } = useAppConfig()
+
+const isDashboard = computed(() => route.path.startsWith('/dashboard') && route.path !== '/dashboard/login')
+const currentUser = ref(null)
+
+async function fetchCurrentUser() {
+  if (isDashboard.value) {
+    try {
+      const res = await useAPI('/api/user/current')
+      currentUser.value = res
+    }
+    catch {
+      currentUser.value = null
+    }
+  }
+}
+
+onMounted(() => {
+  fetchCurrentUser()
+})
+
+watch(() => route.path, () => {
+  fetchCurrentUser()
+  showMenu.value = false
+})
 </script>
 
 <template>
@@ -29,6 +54,13 @@ const { title } = useAppConfig()
               class="h-8 md:h-9 w-auto object-contain hidden dark:block"
             >
           </a>
+          <NuxtLink
+            v-if="isDashboard"
+            to="/dashboard"
+            class="ml-3 hidden sm:inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors"
+          >
+            管理工作台
+          </NuxtLink>
         </div>
 
         <div
@@ -56,16 +88,35 @@ const { title } = useAppConfig()
               >
             </a>
             <div
-              class="flex flex-col items-start justify-end w-full pt-4 md:items-center md:flex-row md:py-0 md:space-x-3"
+              class="flex flex-col items-start justify-end w-full pt-4 md:items-center md:flex-row md:py-0 md:space-x-3 gap-2 md:gap-0"
             >
-              <a
-                class="w-full px-4 py-2 font-semibold text-gray-700 hover:text-red-600 dark:text-gray-200 dark:hover:text-red-400 cursor-pointer md:w-auto transition-colors"
-                href="/dashboard"
-                title="管理工作台"
-              >管理工作台</a>
-              <span class="mt-2 md:mt-0">
-                <SwitchTheme />
-              </span>
+              <!-- 处于工作台时的全局操作区 -->
+              <template v-if="isDashboard">
+                <div
+                  v-if="currentUser"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-lg border border-gray-200/80 dark:border-gray-800 font-mono shadow-xs"
+                >
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span class="font-medium">{{ currentUser.name }}</span>
+                  <span class="text-gray-400">({{ currentUser.role === 'admin' ? '总控管理员' : (currentUser.role === 'operator' ? '专属运营' : '只读观察') }})</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <SwitchTheme />
+                  <DashboardLogout />
+                </div>
+              </template>
+
+              <!-- 非工作台页面（官网首页） -->
+              <template v-else>
+                <a
+                  class="w-full px-4 py-2 font-semibold text-gray-700 hover:text-red-600 dark:text-gray-200 dark:hover:text-red-400 cursor-pointer md:w-auto transition-colors"
+                  href="/dashboard"
+                  title="管理工作台"
+                >管理工作台</a>
+                <span class="mt-2 md:mt-0">
+                  <SwitchTheme />
+                </span>
+              </template>
             </div>
           </div>
         </div>

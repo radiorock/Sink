@@ -9,7 +9,8 @@ const viewMode = ref('briefing')
 
 <template>
   <main class="space-y-6">
-    <DashboardBreadcrumb title="全站大盘" />
+    <!-- 常驻主导航 -->
+    <DashboardNav />
 
     <!-- 视图视角切换器 (运营简报 vs 趋势大盘) -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border/70 pb-3">

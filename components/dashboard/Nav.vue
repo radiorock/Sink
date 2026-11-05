@@ -1,15 +1,16 @@
 <script setup>
+import { Globe, LayoutDashboard, Link2, ShieldCheck, Users } from 'lucide-vue-next'
+
 const route = useRoute()
 const currentUser = ref(null)
 
 const activeTab = computed(() => {
-  // 保持与当前页面匹配
-  if (route.path.startsWith('/dashboard/links'))
+  if (route.path.startsWith('/dashboard/analysis'))
+    return '/dashboard/analysis'
+  if (route.path.startsWith('/dashboard/links') || route.path.startsWith('/dashboard/link'))
     return '/dashboard/links'
   if (route.path.startsWith('/dashboard/subdomains'))
     return '/dashboard/subdomains'
-  if (route.path.startsWith('/dashboard/analysis'))
-    return '/dashboard/analysis'
   if (route.path.startsWith('/dashboard/audit'))
     return '/dashboard/audit'
   if (route.path.startsWith('/dashboard/users'))
@@ -35,61 +36,64 @@ function handleTabChange(val) {
 </script>
 
 <template>
-  <nav class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between pb-2 border-b border-gray-100 dark:border-gray-800/60 mb-6">
+  <nav class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between pb-3 border-b border-gray-200/80 dark:border-gray-800/80 mb-6">
     <Tabs
-      v-if="route.path !== '/dashboard/link'"
       :model-value="activeTab"
-      class="w-full md:w-auto overflow-x-auto pb-1"
+      class="w-full md:w-auto overflow-x-auto"
       @update:model-value="handleTabChange"
     >
       <TabsList class="inline-flex h-10 items-center justify-start rounded-lg bg-gray-100 dark:bg-gray-800/80 p-1 text-gray-500 dark:text-gray-400 w-auto">
-        <TabsTrigger
-          value="/dashboard/links"
-          class="px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-sm transition-all"
-        >
-          短链管理
-        </TabsTrigger>
-        <TabsTrigger
-          value="/dashboard/subdomains"
-          class="px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-sm transition-all"
-        >
-          专属二级域名
-        </TabsTrigger>
+        <!-- 1. 全站大盘 -->
         <TabsTrigger
           value="/dashboard/analysis"
-          class="px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-sm transition-all"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-xs transition-all cursor-pointer"
         >
+          <LayoutDashboard class="w-3.5 h-3.5 shrink-0" />
           全站大盘
         </TabsTrigger>
+
+        <!-- 2. 短链通道 -->
+        <TabsTrigger
+          value="/dashboard/links"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-xs transition-all cursor-pointer"
+        >
+          <Link2 class="w-3.5 h-3.5 shrink-0" />
+          短链通道
+        </TabsTrigger>
+
+        <!-- 3. 专属域名 -->
+        <TabsTrigger
+          value="/dashboard/subdomains"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-xs transition-all cursor-pointer"
+        >
+          <Globe class="w-3.5 h-3.5 shrink-0" />
+          专属域名
+        </TabsTrigger>
+
+        <!-- 4. 操作审计 -->
         <TabsTrigger
           value="/dashboard/audit"
-          class="px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-sm transition-all"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-xs transition-all cursor-pointer"
         >
-          操作审计记录
+          <ShieldCheck class="w-3.5 h-3.5 shrink-0" />
+          操作审计
         </TabsTrigger>
+
+        <!-- 5. 团队成员 -->
         <TabsTrigger
           v-if="!currentUser || currentUser.role === 'admin'"
           value="/dashboard/users"
-          class="px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-sm transition-all"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:text-gray-900 dark:data-[state=active]:text-gray-100 data-[state=active]:shadow-xs transition-all cursor-pointer"
         >
-          成员与权限
+          <Users class="w-3.5 h-3.5 shrink-0" />
+          团队成员
         </TabsTrigger>
       </TabsList>
     </Tabs>
 
-    <div class="flex items-center space-x-3 self-end md:self-auto">
-      <div
-        v-if="currentUser"
-        class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 rounded-lg border border-gray-200/80 dark:border-gray-800 font-mono shadow-sm"
-      >
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-        <span class="font-medium">{{ currentUser.name }}</span>
-        <span class="text-gray-400">({{ currentUser.role === 'admin' ? '总控管理员' : (currentUser.role === 'operator' ? '专属运营' : '只读观察') }})</span>
-      </div>
+    <div class="flex items-center space-x-2.5 self-end md:self-auto">
       <slot name="left" />
-      <div>
-        <slot />
-      </div>
+      <slot />
     </div>
   </nav>
 </template>

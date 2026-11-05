@@ -156,14 +156,14 @@ onMounted(() => {
     <DashboardNav>
       <Dialog v-model:open="createDialogOpen">
         <DialogTrigger as-child>
-          <Button class="bg-red-600 hover:bg-red-700 text-white font-medium shadow-sm">
+          <Button class="bg-red-600 hover:bg-red-700 text-white font-medium shadow-xs cursor-pointer">
             <Plus class="w-4 h-4 mr-1.5" />
-            新增专属二级域名
+            新增专属域名
           </Button>
         </DialogTrigger>
         <DialogContent class="max-w-[95svw] md:max-w-lg">
           <DialogHeader>
-            <DialogTitle>创建专属二级域名通道</DialogTitle>
+            <DialogTitle>创建专属域名通道</DialogTitle>
             <DialogDescription>
               创建后全球即时生效，自动匹配官方 HTTPS 证书，无需手动配置 DNS。
             </DialogDescription>

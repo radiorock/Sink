@@ -100,20 +100,21 @@ async function exportCSV() {
 </script>
 
 <template>
-  <main class="space-y-6">
-    <DashboardNav>
-      <template
-        v-if="link"
-        #left
-      >
-        <h3 class="text-xl font-bold leading-10">
-          {{ link.slug }} 访问统计
+  <div class="space-y-6">
+    <!-- 指标操作与时间筛选工具栏 -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-3 border-b border-border/60">
+      <div>
+        <h3 v-if="link" class="text-base font-semibold text-foreground">
+          {{ link.slug }} 访问指标趋势
         </h3>
-      </template>
-      <div class="flex items-center space-x-2">
+        <p v-else class="text-xs text-muted-foreground">
+          全站各渠道与分发通道的访问时序监控
+        </p>
+      </div>
+      <div class="flex items-center space-x-2 self-end sm:self-auto">
         <Button
           variant="outline"
-          class="h-9 px-3 text-xs font-medium"
+          class="h-9 px-3 text-xs font-medium cursor-pointer"
           :disabled="exporting"
           title="导出当前时间段内的完整统计报表"
           @click="exportCSV"
@@ -130,10 +131,11 @@ async function exportCSV() {
         </Button>
         <DashboardDatePicker @update:date-range="changeDate" />
       </div>
-    </DashboardNav>
+    </div>
+
     <DashboardCounters />
     <DashboardViews />
     <DashboardMetrics />
     <DashboardSubdomainsOverview v-if="!link" />
-  </main>
+  </div>
 </template>
