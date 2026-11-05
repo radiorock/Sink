@@ -1,7 +1,8 @@
 export default eventHandler(async (event) => {
   const { cloudflare } = event.context
   const KV = cloudflare?.env?.KV
-  if (!KV) return { subdomains: [] }
+  if (!KV)
+    return { subdomains: [] }
 
   await ensureInitialHubData(KV)
 
@@ -29,13 +30,16 @@ export default eventHandler(async (event) => {
   const subdomains: any[] = []
 
   for (const name of names) {
-    const s = await KV.get(`subdomain:${name}`, { type: 'json' })
+    const s: any = await KV.get(`subdomain:${name}`, { type: 'json' })
     if (s) {
       const stat = statsMap[name] || { visits: 0, visitors: 0 }
+      const link: any = await KV.get(`link:${name}`, { type: 'json' })
+      const baseVisits = Number(link?.baseVisits) || 0
+      const baseVisitors = Number(link?.baseVisitors) || 0
       subdomains.push({
         ...s,
-        visits: stat.visits,
-        visitors: stat.visitors,
+        visits: stat.visits + baseVisits,
+        visitors: stat.visitors + baseVisitors,
       })
     }
   }
